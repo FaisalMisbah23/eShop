@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const Navbar = ({ active }) => {
     return (
-        <div className={`${styles.noramlFlex}`}>
+        <div className={`${styles.normalFlex}`}>
             {navItems && navItems.map((i, index) => (
                 <div className="flex">
                     <Link to={i.url}

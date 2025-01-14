@@ -15,7 +15,7 @@ const Dropdown = ({ setDropdown, categoriesData }) => {
             {categoriesData && categoriesData.map((i, index) => (<div
                 key={index}
                 onClick={() => handleSubmit(i)}
-                className={`${styles.noramlFlex}`}
+                className={`${styles.normalFlex}`}
             ><img src={i.image_Url} alt="image"
                 className="select-none object-contain ml-[10px] w-[25px] h-[25px]"
                 />

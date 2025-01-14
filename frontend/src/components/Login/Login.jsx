@@ -22,6 +22,7 @@ const Login = () => {
     }, { withCredentials: true }).then(() => {
       toast.success("Login Success!");
       navigate("/");
+      window.location.reload();
     }).catch((e) => {
       toast.error(e.response.data.message);
     })
@@ -91,8 +92,8 @@ const Login = () => {
               </div>
             </div>
 
-            <div className={`${styles.noramlFlex} justify-between`}>
-              <div className={`${styles.noramlFlex}`}>
+            <div className={`${styles.normalFlex} justify-between`}>
+              <div className={`${styles.normalFlex}`}>
                 <input
                   type="checkbox"
                   name="remember-me"
@@ -125,7 +126,7 @@ const Login = () => {
               </button>
             </div>
 
-            <div className={`${styles.noramlFlex} w-full`}>
+            <div className={`${styles.normalFlex} w-full`}>
               <h4>Not have any account?</h4>
               <Link to="/sign-up" className="text-blue-600 pl-2">
                 Sign Up

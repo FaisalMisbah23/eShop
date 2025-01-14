@@ -8,12 +8,17 @@ import { CgProfile } from "react-icons/cg";
 import { BiMenuAltLeft } from "react-icons/bi";
 import Dropdown from "./Dropdown"
 import Navbar from "./Navbar"
+import { useSelector } from "react-redux";
+import { backend_url } from "../../server";
 
 const Header = ({ activeHeading }) => {
+    const { isAuthenticated } = useSelector((state) => state.user);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchData, setSearchData] = useState(null);
     const [active, setActive] = useState(false);
     const [dropdown, setDropdown] = useState(false);
+
+    const user = isAuthenticated ? isAuthenticated : undefined;
 
     const handleSearchChange = (e) => {
         const term = e.target.value;
@@ -25,7 +30,7 @@ const Header = ({ activeHeading }) => {
     }
 
     window.addEventListener("scroll", () => {
-        if (window.screenY > 70) {
+        if (window.scrollY > 70) {
             setActive(true);
         } else {
             setActive(false);
@@ -81,10 +86,11 @@ const Header = ({ activeHeading }) => {
 
 
             <div className={`${active === true ? "shadow-sm fixed top-0 left-0 z-10" : null} transition hidden 800px:flex items-center justify-between w-full h-[70px] bg-[#3321c8]`}>
-                <div className={`${styles.section} relative ${styles.noramlFlex} justify-between`}>
+                <div className={`${styles.section} relative ${styles.normalFlex} justify-between`}>
                     {/* categories */}
                     <div>
-                        <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
+                        <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block"
+                            onClick={() => setDropdown(!dropdown)}>
                             <BiMenuAltLeft size={30} className="absolute top-3 left-2" />
                             <button className="h-[100%] w-full flex justify-center items-center pl-10 font-sans text-lg bg-white font-[500] rounded-t-md select-none">
                                 All Categories
@@ -92,7 +98,6 @@ const Header = ({ activeHeading }) => {
                             <IoIosArrowDown
                                 size={30}
                                 className="absolute right-4 top-2 cursor-pointer"
-                                onClick={() => setDropdown(!dropdown)}
                             />
                             {dropdown ? (
                                 <Dropdown
@@ -103,11 +108,11 @@ const Header = ({ activeHeading }) => {
                         </div>
                     </div>
                     {/* navitems */}
-                    <div className={`${styles.noramlFlex}`}>
+                    <div className={`${styles.normalFlex}`}>
                         <Navbar active={activeHeading} />
                     </div>
                     <div className="flex">
-                        <div className={`${styles.noramlFlex}`}>
+                        <div className={`${styles.normalFlex}`}>
                             <div className="relative cursor-pointer mr-[15px]">
                                 <AiOutlineHeart size={30}
                                     color="rgb(255 255 255 / 83%" />
@@ -115,7 +120,7 @@ const Header = ({ activeHeading }) => {
                                     className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center"
                                 >0</span>
                             </div>
-                        </div><div className={`${styles.noramlFlex}`}>
+                        </div><div className={`${styles.normalFlex}`}>
                             <div className="relative cursor-pointer mr-[15px]">
                                 <AiOutlineShoppingCart size={30}
                                     color="rgb(255 255 255 / 83%" />
@@ -123,16 +128,25 @@ const Header = ({ activeHeading }) => {
                                     className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center"
                                 >1</span>
                             </div>
-                        </div><div className={`${styles.noramlFlex}`}>
+                        </div>
+
+                        <div className={`${styles.normalFlex}`}>
                             <div className="relative cursor-pointer mr-[15px]">
-                                <Link to={"/login"}>
-                                    <CgProfile size={30} color="rgb(255 255 255 / 83%" />
-                                </Link>
+                                {user ? (
+                                    <Link to={"/profile"}>
+                                        <img src={`${backend_url}/uploads/${user.avatar}`} alt="avatar" className="w-[35px] h-[35px] rounded-full" />
+                                    </Link>
+                                ) : (
+                                    <Link to={"/login"}>
+                                        <CgProfile size={30} color="rgb(255 255 255 / 83%" />
+                                    </Link>
+                                )}
                             </div>
                         </div>
+
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

@@ -4,6 +4,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors")
 const bodyParser = require("body-parser");
+const path = require("path");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -12,7 +13,8 @@ app.use(cors({
     credentials: true
 }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
-app.use("/", express.static("/backend/uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 
 
 // config
