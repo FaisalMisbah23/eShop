@@ -20,9 +20,9 @@ const Login = () => {
       email,
       password
     }, { withCredentials: true }).then(() => {
-      toast.success("Login Success!");
+      toast.success("Login Successful!");
       navigate("/");
-      window.location.reload();
+      window.location.reload(true);
     }).catch((e) => {
       toast.error(e.response.data.message);
     })

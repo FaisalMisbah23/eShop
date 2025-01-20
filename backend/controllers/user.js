@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const { upload } = require("../multer");
-const ErrorHandler = require("../utlis/ErrorHandler");
+const ErrorHandler = require("../utils/ErrorHandler");
 const fs = require("fs");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
-const sendMail = require("../utlis/sendMail");
+const sendMail = require("../utils/sendMail");
 const catchAsyncError = require("../middleware/catchAsyncError");
-const sendToken = require("../utlis/jwtToken");
+const sendToken = require("../utils/jwtToken");
 const path = require("path");
 const { isAuthenticated } = require("../middleware/auth");
 
@@ -143,5 +143,18 @@ router.get("/getuser", isAuthenticated, catchAsyncError(async (req, res, next) =
         return next(new ErrorHandler(error.message, 500));
     }
 }));
+
+// log out user
+router.get("/logout", isAuthenticated, catchAsyncError(async (req, res, next) => {
+    res.cookie("token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true
+    })
+
+    res.status(201).json({
+        success: true,
+        message: "Logout Successful!"
+    })
+}))
 
 module.exports = router;

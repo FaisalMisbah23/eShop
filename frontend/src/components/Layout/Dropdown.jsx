@@ -16,7 +16,7 @@ const Dropdown = ({ setDropdown, categoriesData }) => {
                 key={index}
                 onClick={() => handleSubmit(i)}
                 className={`${styles.normalFlex}`}
-            ><img src={i.image_Url} alt="image"
+            ><img src={i.image_Url} alt=""
                 className="select-none object-contain ml-[10px] w-[25px] h-[25px]"
                 />
                 <h3 className="cursor-pointer m-3 select-none">{i.title}</h3>
