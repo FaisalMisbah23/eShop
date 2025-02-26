@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import styles from "../../styles/styles"
 import { Link } from "react-router-dom"
-import { categoriesData, productData } from "../../static/data";
+import { categoriesData } from "../../static/data";
 import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
@@ -16,6 +16,7 @@ import WishList from "../WishList/WishList"
 
 const Header = ({ activeHeading }) => {
     const { isAuthenticated, user } = useSelector((state) => state.user);
+    const { allProducts } = useSelector((state) => state.products);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchData, setSearchData] = useState(null);
     const [active, setActive] = useState(false);
@@ -24,16 +25,19 @@ const Header = ({ activeHeading }) => {
     const [openWishlist, setOpenWishlist] = useState(false);
     const [open, setOpen] = useState(false);
 
-
-
     const handleSearchChange = (e) => {
         const term = e.target.value;
         setSearchTerm(term);
-        const filteredProducts = productData.filter((product) =>
-            product.name.toLowerCase().includes(term.toLowerCase())
-        );
-        setSearchData(filteredProducts);
-    }
+
+        if (term === "") {
+            setSearchData();
+        } else {
+            const filteredProducts = allProducts && allProducts.filter((product) =>
+                product.name.toLowerCase().includes(term.toLowerCase())
+            );
+            setSearchData(filteredProducts);
+        }
+    };
 
     window.addEventListener("scroll", () => {
         if (window.scrollY > 70) {
@@ -69,7 +73,7 @@ const Header = ({ activeHeading }) => {
                                     return (
                                         <Link to={`/product/${Product_name}`}>
                                             <div className="w-full flex items-start-py-3">
-                                                <img src={i.image_Url[0].url}
+                                                <img src={`${backend_url}${i.images[0]}`}
                                                     alt="image"
                                                     className="w-[40px] h-[40px] mr-[10px]" />
                                                 <h1>{i.name}</h1>
@@ -143,7 +147,7 @@ const Header = ({ activeHeading }) => {
                             <div className="relative cursor-pointer mr-[15px]">
                                 {isAuthenticated ? (
                                     <Link to={"/profile"}>
-                                        <img src={`${backend_url}/uploads/${user.avatar}`} alt="avatar" className="w-[35px] h-[35px] rounded-full" />
+                                        <img src={`${backend_url}${user.avatar}`} alt="avatar" className="w-[35px] h-[35px] rounded-full" />
                                     </Link>
                                 ) : (
                                     <Link to={"/login"}>
@@ -271,7 +275,7 @@ const Header = ({ activeHeading }) => {
                                     <div>
                                         <Link to="/profile">
                                             <img
-                                                src={`${backend_url}/uploads/${user.avatar}`}
+                                                src={`${backend_url}${user.avatar}`}
                                                 alt=""
                                                 className="w-[60px] h-[60px] rounded-full border-[3px] border-[#0eae88]"
                                             />
