@@ -31,7 +31,7 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/products' element={<ProductsPage />} />
-          <Route path='/product/:name' element={<ProductDetailsPage />} />
+          <Route path='/product/:id' element={<ProductDetailsPage />} />
           <Route path='/profile' element={
             <ProtectedRoutes>
               <ProfilePage />
