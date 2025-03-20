@@ -1,30 +1,43 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import Footer from '../components/Layout/Footer'
-import Header from '../components/Layout/Header'
+import React, { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
+import Footer from "../components/Layout/Footer";
+import Header from "../components/Layout/Header";
 import ProductDetails from "../components/products/ProductDetails";
 import SuggestedProduct from "../components/products/SuggestedProducts";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 const ProductDetailsPage = () => {
-    const { allProducts } = useSelector((state) => state.products);
+  const { allProducts } = useSelector((state) => state.products);
+  const { allEvents } = useSelector((state) => state.event);
+  const { id } = useParams();
+  const [data, setData] = useState(null);
+  const [searchParams] = useSearchParams();
+  const eventData = searchParams.get("isEvent");
 
-    const { id } = useParams();
-    const [data, setData] = useState(null);
+  useEffect(() => {
+    if (eventData !== null) {
+      const data = allEvents && allEvents.find((i) => i._id === id);
+      setData(data);
+    } else {
+      const data = allProducts && allProducts.find((i) => i._id === id);
+      setData(data);
+    }
+  }, [allProducts, allEvents]);
 
-    useEffect(() => {
-        const data = allProducts && allProducts.find((i) => i._id === id);
-        setData(data);
-    }, [data,allProducts,id]);
-
-    return (
-        <div>
-            <Header />
-            <ProductDetails data={data} />
+  return (
+    <div>
+      <Header />
+      <ProductDetails data={data} />
+        {
+          !eventData && (
+            <>
             {data && <SuggestedProduct data={data} />}
-            <Footer />
-        </div>
-    )
-}
+            </>
+          )
+        }
+      <Footer />
+    </div>
+  );
+};
 
-export default ProductDetailsPage
+export default ProductDetailsPage;
