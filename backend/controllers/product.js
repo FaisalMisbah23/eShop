@@ -44,14 +44,13 @@ router.post(
 router.get("/get-all-products-shop/:id", catchAsyncError(async (req, res, next) => {
     try {
         const products = await Product.find({ shopId: req.params.id });
-        return res.status(201).json({
+        res.status(201).json({
             products,
             success: true
         })
 
     } catch (error) {
-        ;
-        return next(new ErrorHandler(error, 400))
+        return next(new ErrorHandler(error, 400));
     }
 }))
 
@@ -97,7 +96,7 @@ router.get(
     "/get-all-products",
     catchAsyncError(async (req, res, next) => {
       try {
-        const products = await Product.find();
+        const products = await Product.find().sort({createdAt:-1});
   
         res.status(201).json({
           success: true,

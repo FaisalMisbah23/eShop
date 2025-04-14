@@ -18,6 +18,7 @@ import {
   OrderSuccessPage,
   OrderDetailsPage,
   TrackOrderPage,
+  UserInbox
 } from "./routes/Routes.js";
 import {
   ShopHomePage,
@@ -32,7 +33,8 @@ import {
   ShopOrderDetails,
   ShopAllRefunds,
   ShopSettingsPage,
-  ShopWithDrawMoneyPage
+  ShopWithDrawMoneyPage,
+  ShopInboxPage
 } from "./routes/ShopRoutes.js";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
@@ -93,6 +95,13 @@ function App() {
             element={
               <ProtectedRoutes>
                 <ProfilePage />
+              </ProtectedRoutes>
+            }
+          /> <Route
+            path="/inbox"
+            element={
+              <ProtectedRoutes>
+                <UserInbox />
               </ProtectedRoutes>
             }
           />
@@ -231,6 +240,13 @@ function App() {
           element={
             <SellerProtectedRoutes>
               <ShopWithDrawMoneyPage />
+            </SellerProtectedRoutes>
+          }
+        /><Route
+          path="/dashboard-messages"
+          element={
+            <SellerProtectedRoutes>
+              <ShopInboxPage />
             </SellerProtectedRoutes>
           }
         />

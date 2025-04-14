@@ -32,6 +32,8 @@ const event = require("./controllers/event");
 const coupon = require("./controllers/couponCode");
 const payment = require("./controllers/payment");
 const order = require("./controllers/order");
+const conversation = require("./controllers/conversation");
+const message = require("./controllers/message");
 
 app.use("/api/v2/user", user);
 app.use("/api/v2/shop", shop);
@@ -40,6 +42,8 @@ app.use("/api/v2/event", event);
 app.use("/api/v2/coupon", coupon);
 app.use("/api/v2/payment", payment);
 app.use("/api/v2/order", order);
+app.use("/api/v2/conversation", conversation);
+app.use("/api/v2/message", message);
 
 // It's for Error Handling
 app.use(ErrorHandler);

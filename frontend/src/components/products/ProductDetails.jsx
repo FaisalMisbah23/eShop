@@ -8,7 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
-import { backend_url } from "../../server";
+import { backend_url, server } from "../../server";
 import styles from "../../styles/styles";
 import {
   addToWishlist,
@@ -17,11 +17,13 @@ import {
 import { toast } from "react-toastify";
 import { addToCart } from "../../redux/actions/cart";
 import Ratings from "./Ratings";
+import axios from "axios";
 
 const ProductDetails = ({ data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
   const { products } = useSelector((state) => state.products);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
 
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
@@ -92,8 +94,28 @@ const ProductDetails = ({ data }) => {
 
   const averageRating = avg.toFixed(2);
 
-  const handleMessageSubmit = () => {
-    navigate("/inbox?conversation=507ebjver884ehfdjeriv84");
+  const handleMessageSubmit = (data) => {
+    if (isAuthenticated) {
+      const groupTitle = data._id + user._id;
+      const userId = user._id;
+      const sellerId = data.shop._id;
+      axios
+        .post(`${server}/conversation/create-new-conversation`, {
+          groupTitle,
+          userId,
+          sellerId,
+        })
+        .then((res) => {
+          console.log("res from then", res);
+          navigate(`/inbox?${res.data.conversation._id}`);
+        })
+        .catch((error) => {
+          console.log("error from catch", error);
+          toast.error(error.response.data.message);
+        });
+    } else {
+      toast.error("Please login to create a conversation");
+    }
   };
 
   return (
@@ -209,7 +231,7 @@ const ProductDetails = ({ data }) => {
                   </div>
                   <div
                     className={`${styles.button} bg-[#6443d1] mt-4 !rounded !h-11`}
-                    onClick={handleMessageSubmit}
+                    onClick={() => handleMessageSubmit(data)}
                   >
                     <span className="text-white flex items-center">
                       Send Message <AiOutlineMessage className="ml-1" />
