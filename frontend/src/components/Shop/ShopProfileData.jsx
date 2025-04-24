@@ -7,6 +7,7 @@ import ProductCard from "../Route/ProductCard/ProductCard";
 import { backend_url } from "../../server";
 import { getAllEventsShop } from "../../redux/actions/event";
 import Ratings from "../products/Ratings";
+import { format } from "timeago.js";
 
 const ShopProfileData = ({ isOwner }) => {
   const { products } = useSelector((state) => state.products);
@@ -118,7 +119,9 @@ const ShopProfileData = ({ isOwner }) => {
                     <Ratings rating={item.rating} />
                   </div>
                   <p className="font-[400] text-[#000000a7]">{item?.comment}</p>
-                  <p className="text-[#000000a7] text-[14px]">{"2 days ago"}</p>
+                  <p className="text-[#000000a7] text-[14px]">
+                    {format(item.createdAt)}
+                  </p>
                 </div>
               </div>
             ))}

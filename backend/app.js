@@ -5,6 +5,9 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
+const { v2 } = require("cloudinary");
+
+const cloudinary = v2;
 
 app.use(express.json());
 app.use(cookieParser());
@@ -16,6 +19,9 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/test", (req, res) => {
+  res.send("Hello World!");
+});
 
 // config
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -23,6 +29,12 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
     path: "config/.env",
   });
 }
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 // import routes
 const user = require("./controllers/user");
@@ -34,6 +46,7 @@ const payment = require("./controllers/payment");
 const order = require("./controllers/order");
 const conversation = require("./controllers/conversation");
 const message = require("./controllers/message");
+const withdraw = require("./controllers/withdraw");
 
 app.use("/api/v2/user", user);
 app.use("/api/v2/shop", shop);
@@ -44,6 +57,7 @@ app.use("/api/v2/payment", payment);
 app.use("/api/v2/order", order);
 app.use("/api/v2/conversation", conversation);
 app.use("/api/v2/message", message);
+app.use("/api/v2/withdraw", withdraw);
 
 // It's for Error Handling
 app.use(ErrorHandler);

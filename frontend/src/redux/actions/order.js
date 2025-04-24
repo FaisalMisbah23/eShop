@@ -46,3 +46,26 @@ export const getAllOrdersOfShop = (shopId) => async (dispatch) => {
     });
   }
 };
+
+// get all orders of Admin
+export const getAllOrdersOfAdmin = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "AdminAllOrdersRequest",
+    });
+
+    const { data } = await axios.get(`${server}/order/admin-all-orders`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: "AdminAllOrdersSuccess",
+      payload: data.orders,
+    });
+  } catch (error) {
+    dispatch({
+      type: "AdminAllOrdersFail",
+      payload: error.response.data.message,
+    });
+  }
+};

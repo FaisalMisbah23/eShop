@@ -18,7 +18,7 @@ import {
   OrderSuccessPage,
   OrderDetailsPage,
   TrackOrderPage,
-  UserInbox
+  UserInbox,
 } from "./routes/Routes.js";
 import {
   ShopHomePage,
@@ -34,8 +34,17 @@ import {
   ShopAllRefunds,
   ShopSettingsPage,
   ShopWithDrawMoneyPage,
-  ShopInboxPage
+  ShopInboxPage,
 } from "./routes/ShopRoutes.js";
+import {
+  AdminDashboardPage,
+  AdminDashboardUsers,
+  AdminDashboardSellers,
+  AdminDashboardOrders,
+  AdminDashboardProducts,
+  AdminDashboardEvents,
+  AdminDashboardWithdraw
+} from "./routes/AdminRoutes";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
@@ -49,6 +58,7 @@ import axios from "axios";
 import { server } from "./server.js";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import AdminProtectedRoutes from "./routes/ProtectedAdminRoutes.js";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -97,7 +107,8 @@ function App() {
                 <ProfilePage />
               </ProtectedRoutes>
             }
-          /> <Route
+          />{" "}
+          <Route
             path="/inbox"
             element={
               <ProtectedRoutes>
@@ -143,7 +154,7 @@ function App() {
             path="/seller/activation/:activation_token"
             element={<SellerActivationPage />}
           />
-          {/* shop Router */}
+          {/* shop Routes */}
           <Route path="/shop/preview/:id" element={<ShopPreviewPage />} />
           <Route path="/shop-create" element={<ShopCreatePage />} />
           <Route path="/shop-login" element={<ShopLoginPage />} />
@@ -235,21 +246,79 @@ function App() {
               </SellerProtectedRoutes>
             }
           />
-           <Route
-          path="/dashboard-withdraw-money"
-          element={
-            <SellerProtectedRoutes>
-              <ShopWithDrawMoneyPage />
-            </SellerProtectedRoutes>
-          }
-        /><Route
-          path="/dashboard-messages"
-          element={
-            <SellerProtectedRoutes>
-              <ShopInboxPage />
-            </SellerProtectedRoutes>
-          }
-        />
+          <Route
+            path="/dashboard-withdraw-money"
+            element={
+              <SellerProtectedRoutes>
+                <ShopWithDrawMoneyPage />
+              </SellerProtectedRoutes>
+            }
+          />
+          <Route
+            path="/dashboard-messages"
+            element={
+              <SellerProtectedRoutes>
+                <ShopInboxPage />
+              </SellerProtectedRoutes>
+            }
+          />
+          {/* admin Routes */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminProtectedRoutes>
+                <AdminDashboardPage />
+              </AdminProtectedRoutes>
+            }
+          />
+          <Route
+            path="/admin-users"
+            element={
+              <AdminProtectedRoutes>
+                <AdminDashboardUsers />
+              </AdminProtectedRoutes>
+            }
+          />
+          <Route
+            path="/admin-sellers"
+            element={
+              <AdminProtectedRoutes>
+                <AdminDashboardSellers />
+              </AdminProtectedRoutes>
+            }
+          />
+          <Route
+            path="/admin-orders"
+            element={
+              <AdminProtectedRoutes>
+                <AdminDashboardOrders />
+              </AdminProtectedRoutes>
+            }
+          />
+          <Route
+            path="/admin-products"
+            element={
+              <AdminProtectedRoutes>
+                <AdminDashboardProducts />
+              </AdminProtectedRoutes>
+            }
+          />
+          <Route
+            path="/admin-events"
+            element={
+              <AdminProtectedRoutes>
+                <AdminDashboardEvents />
+              </AdminProtectedRoutes>
+            }
+          />
+          <Route
+            path="/admin-withdraw-request"
+            element={
+              <AdminProtectedRoutes>
+                <AdminDashboardWithdraw  />
+              </AdminProtectedRoutes>
+            }
+          />
         </Routes>
         <ToastContainer
           position="bottom-center"

@@ -9,11 +9,12 @@ const sendMail = require("../utils/sendMail");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const sendToken = require("../utils/jwtToken");
 const path = require("path");
-const { isAuthenticated } = require("../middleware/auth");
+const { isAuthenticated, isAdmin } = require("../middleware/auth");
+const { cloudinary } = require("cloudinary");
 
-router.post("/create-user", upload.single("file"), async (req, res, next) => {
+router.post("/create-user", async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, avatar } = req.body;
     const userEmail = await User.findOne({ email });
 
     if (userEmail) {
@@ -27,14 +28,18 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
       return next(new ErrorHandler("User already exists", 400));
     }
 
-    const filename = req.file.filename;
-    const fileUrl = path.join(filename);
+    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+      folder: "avatars",
+    });
 
     const user = {
       name: name,
       email: email,
       password: password,
-      avatar: fileUrl,
+      avatar: {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      },
     };
 
     const activationToken = createActivationToken(user);
@@ -341,6 +346,53 @@ router.get(
       res.status(201).json({
         success: true,
         user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// all users for admin
+router.get(
+  "/admin-all-users",
+  isAuthenticated,
+  isAdmin("Admin"),
+  catchAsyncError(async (req, res, next) => {
+    try {
+      const users = await User.find().sort({
+        createdAt: -1,
+      });
+      res.status(201).json({
+        success: true,
+        users,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// delete users for admin
+router.delete(
+  "/delete-user/:id",
+  isAuthenticated,
+  isAdmin("Admin"),
+  catchAsyncError(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.params.id);
+
+      if (!user) {
+        return next(
+          new ErrorHandler("User is not available with this id", 400)
+        );
+      }
+
+      await User.findByIdAndDelete(req.params.id);
+
+      res.status(201).json({
+        success: true,
+        message: "User deleted successfully!",
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));

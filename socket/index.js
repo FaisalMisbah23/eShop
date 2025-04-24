@@ -32,7 +32,7 @@ const getUser = (receiverId) => {
   return users.find((user) => user.userId === receiverId);
 };
 
-// Define a message object with a seen property
+// define a message object with a seen property
 const createMessage = ({ senderId, receiverId, text, images }) => ({
   senderId,
   receiverId,
@@ -59,14 +59,14 @@ io.on("connection", (socket) => {
 
     const user = getUser(receiverId);
 
-    // Store the messages in the `messages` object
+    // store the messages in the `messages` object
     if (!messages[receiverId]) {
       messages[receiverId] = [message];
     } else {
       messages[receiverId].push(message);
     }
 
-    // send the message to the recevier
+    // send the message to the receiver
     io.to(user?.socketId).emit("getMessage", message);
   });
 
