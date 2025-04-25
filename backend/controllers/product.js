@@ -2,17 +2,15 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../model/product");
 const Order = require("../model/order");
-const { upload } = require("../multer");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const ErrorHandler = require("../utils/ErrorHandler");
 const Shop = require("../model/shop");
 const { isSeller, isAuthenticated, isAdmin } = require("../middleware/auth.js");
-const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
 
 // create product
 router.post(
   "/create-product",
-  upload.array("images"),
   catchAsyncError(async (req, res, next) => {
     try {
       const shopId = req.body.shopId;
@@ -20,11 +18,29 @@ router.post(
       if (!shop) {
         return next(new ErrorHandler("Shop Id is invalid!", 400));
       } else {
-        const files = req.files;
-        const imageUrls = files.map((file) => `${file.filename}`);
+        let images = [];
+
+        if (typeof req.body.images === "string") {
+          images.push(req.body.images);
+        } else {
+          images = req.body.images;
+        }
+
+        const imagesLinks = [];
+
+        for (let i = 0; i < images.length; i++) {
+          const result = await cloudinary.uploader.upload(images[i], {
+            folder: "products",
+          });
+
+          imagesLinks.push({
+            public_id: result.public_id,
+            url: result.secure_url,
+          });
+        }
 
         const productData = req.body;
-        productData.images = imageUrls;
+        productData.images = imagesLinks;
         productData.shop = shop;
 
         const product = await Product.create(productData);
@@ -63,25 +79,19 @@ router.delete(
   catchAsyncError(async (req, res, next) => {
     try {
       const productId = req.params.id;
-
-      const productData = await Product.findById(productId);
-
-      productData.images.forEach((imageUrl) => {
-        const filename = imageUrl;
-        const filePath = `uploads/${filename}`;
-
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            console.log(err);
-          }
-        });
-      });
-
-      const product = await Product.findByIdAndDelete(productId);
+      const product = await Product.findById(productId);
 
       if (!product) {
-        return next(new ErrorHandler("Product not found with this id!", 500));
+        return next(
+          new ErrorHandler("Product is not found with this id!", 404)
+        );
       }
+
+      for (let i = 0; i < product.images.length; i++) {
+        await cloudinary.uploader.destroy(product.images[i].public_id);
+      }
+
+      await product.deleteOne();
 
       res.status(201).json({
         success: true,

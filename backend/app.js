@@ -5,15 +5,13 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
-const { v2 } = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
-const cloudinary = v2;
-
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
@@ -31,9 +29,9 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 }
 
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // import routes

@@ -5,7 +5,6 @@ import {
   AiOutlineDelete,
 } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { backend_url } from "../../server";
 import styles from "../../styles/styles";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
@@ -51,27 +50,30 @@ const ProfileContent = ({ active }) => {
   };
 
   const handleImage = async (e) => {
-    const file = e.target.files[0];
-    setAvatar(file);
+    const reader = new FileReader();
 
-    const formData = new FormData();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+        axios
+          .put(
+            `${server}/user/update-avatar`,
+            { avatar: reader.result },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((response) => {
+            dispatch(loadUser());
+            toast.success("avatar updated successfully!");
+          })
+          .catch((error) => {
+            toast.error(error);
+          });
+      }
+    };
 
-    formData.append("image", e.target.files[0]);
-
-    await axios
-      .put(`${server}/user/update-avatar`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      })
-      .then(() => {
-        dispatch(loadUser());
-        toast.success("Avatar updated successfully!");
-      })
-      .catch((error) => {
-        toast.error(error);
-      });
+    reader.readAsDataURL(e.target.files[0]);
   };
 
   return (
@@ -82,7 +84,7 @@ const ProfileContent = ({ active }) => {
           <div className="flex justify-center w-full">
             <div className="relative">
               <img
-                src={`${backend_url}${user?.avatar}`}
+                src={`${user?.avatar?.url}`}
                 className="w-[150px] h-[150px] rounded-full object-cover border-[3px] border-[#3ad132]"
                 alt=""
               />
