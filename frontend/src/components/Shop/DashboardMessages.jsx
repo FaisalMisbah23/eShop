@@ -9,7 +9,7 @@ import styles from "../../styles/styles";
 import { TfiGallery } from "react-icons/tfi";
 import socketIO from "socket.io-client";
 import { format } from "timeago.js";
-const ENDPOINT = "https://eshopzone.vercel.app";
+const ENDPOINT = "https://eshop-qc49.onrender.com";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 const DashboardMessages = () => {
@@ -91,7 +91,7 @@ const DashboardMessages = () => {
       }
     };
     getMessage();
-  }, [messages,images]);
+  }, [messages, images]);
 
   // create new message
   const sendMessageHandler = async (e) => {
