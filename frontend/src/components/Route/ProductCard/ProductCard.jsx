@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
   AiFillHeart,
-  AiFillStar,
   AiOutlineEye,
   AiOutlineHeart,
   AiOutlineShoppingCart,
-  AiOutlineStar,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import styles from "../../../styles/styles";
@@ -17,6 +15,7 @@ import {
 } from "../../../redux/actions/wishlist";
 import { toast } from "react-toastify";
 import { addToCart } from "../../../redux/actions/cart";
+import Ratings from "../../products/Ratings";
 
 const ProductCard = ({ data, isEvent }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
@@ -91,31 +90,7 @@ const ProductCard = ({ data, isEvent }) => {
           </h4>
 
           <div className="flex">
-            <AiFillStar
-              className="mr-2 cursor-pointer"
-              size={20}
-              color="#F6BA00"
-            />
-            <AiFillStar
-              className="mr-2 cursor-pointer"
-              size={20}
-              color="#F6BA00"
-            />
-            <AiFillStar
-              className="mr-2 cursor-pointer"
-              size={20}
-              color="#F6BA00"
-            />
-            <AiFillStar
-              className="mr-2 cursor-pointer"
-              color="#F6BA00"
-              size={20}
-            />
-            <AiOutlineStar
-              size={20}
-              className="mr-2 cursor-pointer"
-              color="#F6BA00"
-            />
+          <Ratings rating={data?.ratings} />
           </div>
 
           <div className="py-2 flex items-center justify-between">

@@ -36,9 +36,9 @@ const ShopCreate = () => {
         setEmail("");
         setPassword("");
         setAvatar();
-        setZipCode();
+        setZipCode("");
         setAddress("");
-        setPhoneNumber();
+        setPhoneNumber("");
       })
       .catch((error) => {
         toast.error(error.response.data.message);
