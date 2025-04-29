@@ -35,9 +35,9 @@ const ShopInfo = ({ isOwner }) => {
       .get(`${server}/shop/logout`, {
         withCredentials: true,
       })
-      .then(() => {
-        toast.success("logout successfully!");
+      .then((res) => {
         window.location.reload();
+        toast.success(res.data.message);
       })
       .catch((error) => {
         toast.error(error.response.data.message);
