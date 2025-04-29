@@ -40,7 +40,7 @@ router.post("/create-shop", async (req, res, next) => {
 
     const activationToken = createActivationToken(seller);
 
-    const activationUrl = `https://e-shop-livid-pi.vercel.app/seller/activation/${activationToken}`;
+    const activationUrl = `https://eshopzone.vercel.app/seller/activation/${activationToken}`;
 
     try {
       await sendMail({

@@ -43,7 +43,7 @@ import {
   AdminDashboardOrders,
   AdminDashboardProducts,
   AdminDashboardEvents,
-  AdminDashboardWithdraw
+  AdminDashboardWithdraw,
 } from "./routes/AdminRoutes";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
@@ -77,6 +77,10 @@ function App() {
     dispatch(getAllEvents());
     getStripeApiKey();
   }, [dispatch]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>
@@ -315,7 +319,7 @@ function App() {
             path="/admin-withdraw-request"
             element={
               <AdminProtectedRoutes>
-                <AdminDashboardWithdraw  />
+                <AdminDashboardWithdraw />
               </AdminProtectedRoutes>
             }
           />

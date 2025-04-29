@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers } from "../../redux/actions/user";
-import { DataGrid } from "@mui/x-data-grid"
+import { DataGrid } from "@mui/x-data-grid";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Button } from "@mui/material";
 import styles from "../../styles/styles";
@@ -21,6 +21,7 @@ const AllUsers = () => {
   }, [dispatch]);
 
   const handleDelete = async (id) => {
+    console.log(id)
     await axios
       .delete(`${server}/user/delete-user/${id}`, { withCredentials: true })
       .then((res) => {
@@ -94,7 +95,7 @@ const AllUsers = () => {
     });
 
   return (
-    <div className="w-full flex justify-center pt-5">
+    <div className="w-full flex justify-center pt-5 overflow-y-scroll h-[90vh]">
       <div className="w-[97%]">
         <h3 className="text-[22px] font-Poppins pb-2">All Users</h3>
         <div className="w-full min-h-[45vh] bg-white rounded">

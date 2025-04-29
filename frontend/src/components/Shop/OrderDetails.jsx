@@ -59,6 +59,13 @@ const OrderDetails = () => {
       });
   };
 
+  useEffect(() => {
+    if (data?.status) {
+      console.log("Updating status from data:", data.status);
+      setStatus(data.status);
+    }
+  }, [data?.status]);
+
   return (
     <div className={`py-4 min-h-screen ${styles.section}`}>
       <div className="w-full flex items-center justify-between">

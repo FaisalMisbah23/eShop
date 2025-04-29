@@ -34,7 +34,7 @@ router.post("/create-user", async (req, res, next) => {
 
     const activationToken = createActivationToken(user);
 
-    const activationUrl = `https://e-shop-livid-pi.vercel.app/activation/${activationToken}`;
+    const activationUrl = `https://eshopzone.vercel.app/activation/${activationToken}`;
 
     try {
       await sendMail({
@@ -325,6 +325,44 @@ router.put(
       res.status(200).json({
         success: true,
         message: "Password updated successfully!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// update user email subscribe status
+router.put(
+  "/update-subscribe-status",
+  isAuthenticated,
+  catchAsyncError(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user.id);
+
+      if (!user) {
+        return next(new ErrorHandler("User not found!", 400));
+      }
+
+      if (user.email !== req.body.email) {
+        return next(
+          new ErrorHandler(
+            "Email mismatch. Please use your account email.",
+            400
+          )
+        );
+      }
+
+      if (user.isSubscriber === true) {
+        return next(new ErrorHandler("You are already subscribed!", 400));
+      }
+
+      user.isSubscriber = true;
+      await user.save({ validateBeforeSave: false });
+
+      res.status(200).json({
+        success: true,
+        message: "Subscribed successfully to get news, events, and offers!",
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));

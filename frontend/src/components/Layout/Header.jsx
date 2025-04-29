@@ -102,9 +102,21 @@ const Header = ({ activeHeading }) => {
           </div>
 
           <div className={`${styles.button}`}>
-            <Link to={isSeller ? "/dashboard" : "/shop-create"}>
+            <Link
+              to={
+                user?.role === "Admin"
+                  ? "/admin/dashboard"
+                  : isSeller
+                  ? "/dashboard"
+                  : "/shop-create"
+              }
+            >
               <h1 className="text-[#fff] flex items-center">
-                {isSeller ? "Dashboard" : "Become Seller"}{" "}
+                {user?.role === "Admin"
+                  ? "Admin"
+                  : isSeller
+                  ? "Dashboard"
+                  : "Become Seller"}{" "}
                 <IoIosArrowForward className="ml-1" />
               </h1>
             </Link>

@@ -17,15 +17,16 @@ const DashboardHero = () => {
   const [deliveredOrder, setDeliveredOrder] = useState(orders && orders);
 
   useEffect(() => {
-     dispatch(getAllOrdersOfShop(seller._id));
-     dispatch(getAllProductsShop(seller._id));
+    dispatch(getAllOrdersOfShop(seller._id));
+    dispatch(getAllProductsShop(seller._id));
 
-     const orderData = orders && orders.filter((item) => item.status === "Delivered");
-     setDeliveredOrder(orderData);
+    const orderData =
+      orders && orders.filter((item) => item.status === "Delivered");
+    setDeliveredOrder(orderData);
   }, [dispatch]);
 
   const availableBalance = seller.availableBalance.toFixed(2) || 0;
-  
+
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
 
@@ -34,11 +35,11 @@ const DashboardHero = () => {
       headerName: "Status",
       minWidth: 130,
       flex: 0.7,
-    //   cellClassName: (params) => {
-    //     return params.getValue(params.id, "status") === "Delivered"
-    //       ? "greenColor"
-    //       : "redColor";
-    //   },
+      //   cellClassName: (params) => {
+      //     return params.getValue(params.id, "status") === "Delivered"
+      //       ? "greenColor"
+      //       : "redColor";
+      //   },
     },
     {
       field: "itemsQty",
@@ -79,16 +80,17 @@ const DashboardHero = () => {
 
   const row = [];
 
-  orders && orders.forEach((item) => {
-    row.push({
+  orders &&
+    orders.forEach((item) => {
+      row.push({
         id: item._id,
         itemsQty: item.cart.reduce((acc, item) => acc + item.qty, 0),
         total: "US$ " + item.totalPrice,
         status: item.status,
       });
-  });
+    });
   return (
-    <div className="w-full p-8">
+    <div className="w-full overflow-y-scroll h-[90vh] p-8">
       <h3 className="text-[22px] font-Poppins pb-2">Overview</h3>
       <div className="w-full block 800px:flex items-center justify-between">
         <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
@@ -105,7 +107,9 @@ const DashboardHero = () => {
               <span className="text-[16px]">(with 10% service charge)</span>
             </h3>
           </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">${availableBalance}</h5>
+          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
+            ${availableBalance}
+          </h5>
           <Link to="/dashboard-withdraw-money">
             <h5 className="pt-4 pl-[2] text-[#077f9c]">Withdraw Money</h5>
           </Link>
@@ -120,7 +124,9 @@ const DashboardHero = () => {
               All Orders
             </h3>
           </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">{orders && orders.length}</h5>
+          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
+            {orders && orders.length}
+          </h5>
           <Link to="/dashboard-orders">
             <h5 className="pt-4 pl-2 text-[#077f9c]">View Orders</h5>
           </Link>
@@ -139,7 +145,9 @@ const DashboardHero = () => {
               All Products
             </h3>
           </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">{products && products.length}</h5>
+          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
+            {products && products.length}
+          </h5>
           <Link to="/dashboard-products">
             <h5 className="pt-4 pl-2 text-[#077f9c]">View Products</h5>
           </Link>
@@ -148,13 +156,13 @@ const DashboardHero = () => {
       <br />
       <h3 className="text-[22px] font-Poppins pb-2">Latest Orders</h3>
       <div className="w-full min-h-[45vh] bg-white rounded">
-      <DataGrid
-        rows={row}
-        columns={columns}
-        pageSize={10}
-        disableSelectionOnClick
-        autoHeight
-      />
+        <DataGrid
+          rows={row}
+          columns={columns}
+          pageSize={10}
+          disableSelectionOnClick
+          autoHeight
+        />
       </div>
     </div>
   );
