@@ -100,26 +100,30 @@ const Header = ({ activeHeading }) => {
               </div>
             ) : null}
           </div>
+          <div
+            className={` ${
+              user?.role === "Admin"
+            }? flex items-center gap-2 :null`}
+          >
+            {user?.role === "Admin" ? (
+              <div className={`${styles.button}`}>
+                <Link to={"/admin/dashboard"}>
+                  <h1 className="text-[#fff] flex items-center">
+                    Admin
+                    <IoIosArrowForward className="ml-1" />
+                  </h1>
+                </Link>
+              </div>
+            ) : null}
 
-          <div className={`${styles.button}`}>
-            <Link
-              to={
-                user?.role === "Admin"
-                  ? "/admin/dashboard"
-                  : isSeller
-                  ? "/dashboard"
-                  : "/shop-create"
-              }
-            >
-              <h1 className="text-[#fff] flex items-center">
-                {user?.role === "Admin"
-                  ? "Admin"
-                  : isSeller
-                  ? "Dashboard"
-                  : "Become Seller"}{" "}
-                <IoIosArrowForward className="ml-1" />
-              </h1>
-            </Link>
+            <div className={`${styles.button}`}>
+              <Link to={`${isSeller ? "/dashboard" : "/shop-create"}`}>
+                <h1 className="text-[#fff] flex items-center">
+                  {isSeller ? "Go Dashboard" : "Become Seller"}{" "}
+                  <IoIosArrowForward className="ml-1" />
+                </h1>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -315,12 +319,26 @@ const Header = ({ activeHeading }) => {
               </div>
 
               <Navbar active={activeHeading} />
-              <div className={`${styles.button} ml-4 !rounded-[4px]`}>
-                <Link to="/shop-create">
-                  <h1 className="text-[#fff] flex items-center">
-                    Become Seller <IoIosArrowForward className="ml-1" />
-                  </h1>
-                </Link>
+              <div className={`${user?.role === "Admin"}? px-6 flex-col :null`}>
+                {user?.role === "Admin" ? (
+                  <div className={`${styles.button}`}>
+                    <Link to={"/admin/dashboard"}>
+                      <h1 className="text-[#fff] flex items-center">
+                        Admin
+                        <IoIosArrowForward className="ml-1" />
+                      </h1>
+                    </Link>
+                  </div>
+                ) : null}
+
+                <div className={`${styles.button}`}>
+                  <Link to={`${isSeller ? "/dashboard" : "/shop-create"}`}>
+                    <h1 className="text-[#fff] flex items-center">
+                      {isSeller ? "Go Dashboard" : "Become Seller"}{" "}
+                      <IoIosArrowForward className="ml-1" />
+                    </h1>
+                  </Link>
+                </div>
               </div>
               <br />
               <br />
