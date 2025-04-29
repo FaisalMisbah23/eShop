@@ -36,8 +36,8 @@ const ShopInfo = ({ isOwner }) => {
         withCredentials: true,
       })
       .then((res) => {
-        window.location.reload();
         toast.success(res.data.message);
+        window.location.reload();
       })
       .catch((error) => {
         toast.error(error.response.data.message);
