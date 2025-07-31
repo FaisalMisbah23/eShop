@@ -62,8 +62,8 @@ const ShopProfileData = ({ isOwner }) => {
           {isOwner && (
             <div>
               <Link to="/dashboard">
-                <div className={`${styles.button} !rounded-[4px] h-[42px]`}>
-                  <span className="text-[#fff]">Go Dashboard</span>
+                <div className="bg-[#4F8CFF] hover:bg-[#2563eb] text-white px-6 py-2 rounded-lg transition-colors duration-200 font-semibold">
+                  <span>DashBoard</span>
                 </div>
               </Link>
             </div>
@@ -73,32 +73,48 @@ const ShopProfileData = ({ isOwner }) => {
 
       <br />
       {active === 1 && (
-        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-12">
           {products &&
             products.map((i, index) => (
-              <ProductCard data={i} key={index} isShop={true} />
+              <div key={index} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-4">
+                <ProductCard data={i} isShop={true} />
+              </div>
             ))}
         </div>
       )}
 
       {active === 2 && (
         <div className="w-full">
-          <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
-            {events &&
-              events.map((i, index) => (
-                <ProductCard
-                  data={i}
-                  key={index}
-                  isShop={true}
-                  isEvent={true}
-                />
-              ))}
-          </div>
-          {events && events.length === 0 && (
-            <h5 className="w-full text-center py-5 text-[18px]">
-              No Events have for this shop!
-            </h5>
-          )}
+          {(() => {
+            const now = new Date();
+            const runningEvents = events?.filter(
+              (event) =>
+                new Date(event.start_date) <= now && 
+                new Date(event.finish_date) >= now
+            );
+            
+            return (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-12">
+                  {runningEvents &&
+                    runningEvents.map((i, index) => (
+                      <div key={index} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-4">
+                        <ProductCard
+                          data={i}
+                          isShop={true}
+                          isEvent={true}
+                        />
+                      </div>
+                    ))}
+                </div>
+                {(!runningEvents || runningEvents.length === 0) && (
+                  <h5 className="w-full text-center py-5 text-[18px]">
+                    No Running Events for this shop!
+                  </h5>
+                )}
+              </>
+            );
+          })()}
         </div>
       )}
 

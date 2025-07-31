@@ -72,114 +72,118 @@ const ShopSettings = () => {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center">
-      <div className="flex w-full 800px:w-[80%] flex-col justify-center my-5">
-        <div className="w-full flex items-center justify-center">
+    <div className="w-full overflow-y-scroll h-[90vh] p-8">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-[#4F8CFF] mb-2">Shop Settings</h1>
+        <p className="text-gray-600">Manage your shop information and preferences</p>
+      </div>
+      
+      <div className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto">
+        {/* Avatar Section */}
+        <div className="flex flex-col items-center mb-8">
           <div className="relative">
             <img
               src={avatar ? avatar : `${seller.avatar?.url}`}
               alt=""
-              className="w-[200px] h-[200px] rounded-full cursor-pointer"
+              className="w-[150px] h-[150px] rounded-full cursor-pointer border-4 border-[#4F8CFF] shadow-lg"
             />
-            <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[10px] right-[15px]">
+            <div className="w-[40px] h-[40px] bg-[#4F8CFF] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[10px] right-[10px] shadow-lg hover:bg-[#2563eb] transition-colors duration-200">
               <input
                 type="file"
                 id="image"
                 className="hidden"
                 onChange={handleImage}
               />
-              <label htmlFor="image">
-                <AiOutlineCamera />
+              <label htmlFor="image" className="cursor-pointer">
+                <AiOutlineCamera className="text-white" />
               </label>
             </div>
           </div>
+          <p className="text-sm text-gray-500 mt-2">Click the camera icon to update your shop avatar</p>
         </div>
 
-        {/* shop info */}
-        <form
-          aria-aria-required={true}
-          className="flex flex-col items-center"
-          onSubmit={updateHandler}
-        >
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Name</label>
-            </div>
+        {/* Shop Info Form */}
+        <form onSubmit={updateHandler} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Shop Name <span className="text-red-500">*</span>
+              </label>
             <input
-              type="name"
-              placeholder={`${seller.name}`}
+                type="text"
+                placeholder="Enter shop name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-transparent"
               required
             />
           </div>
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop description</label>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Phone Number <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="tel"
+                placeholder="Enter phone number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-transparent"
+                required
+              />
             </div>
-            <input
-              type="name"
-              placeholder={`${
-                seller?.description
-                  ? seller.description
-                  : "Enter your shop description"
-              }`}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Shop Description
+            </label>
+            <textarea
+              placeholder="Enter your shop description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-transparent resize-none"
+              rows="4"
             />
           </div>
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Address</label>
-            </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Shop Address <span className="text-red-500">*</span>
+            </label>
             <input
-              type="name"
-              placeholder={seller?.address}
+              type="text"
+              placeholder="Enter shop address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-transparent"
               required
             />
           </div>
 
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Phone Number</label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Zip Code <span className="text-red-500">*</span>
+              </label>
+            <input
+                type="text"
+                placeholder="Enter zip code"
+                value={zipCode}
+                onChange={(e) => setZipcode(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-transparent"
+              required
+            />
             </div>
-            <input
-              type="number"
-              placeholder={seller?.phoneNumber}
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
           </div>
 
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Zip Code</label>
-            </div>
-            <input
-              type="number"
-              placeholder={seller?.zipCode}
-              value={zipCode}
-              onChange={(e) => setZipcode(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
-
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <input
+          <div className="flex justify-end pt-6">
+            <button
               type="submit"
-              value="Update Shop"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-              readOnly
-            />
+              className="px-8 py-3 bg-[#4F8CFF] hover:bg-[#2563eb] text-white font-semibold rounded-lg shadow-lg transition-colors duration-200"
+            >
+              Update Shop Settings
+            </button>
           </div>
         </form>
       </div>

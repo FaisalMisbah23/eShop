@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import styles from "../../styles/styles";
 import { AiOutlineMoneyCollect } from "react-icons/ai";
 import { MdBorderClear } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -30,17 +29,11 @@ const AdminDashboardMain = () => {
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
-
     {
       field: "status",
       headerName: "Status",
       minWidth: 130,
       flex: 0.7,
-      // cellClassName: (params) => {
-      //   return params.getValue(params.id, "status") === "Delivered"
-      //     ? "greenColor"
-      //     : "redColor";
-      // },
     },
     {
       field: "itemsQty",
@@ -49,7 +42,6 @@ const AdminDashboardMain = () => {
       minWidth: 130,
       flex: 0.7,
     },
-
     {
       field: "total",
       headerName: "Total",
@@ -83,76 +75,77 @@ const AdminDashboardMain = () => {
       {adminOrderLoading ? (
         <Loader />
       ) : (
-        <div className="w-full p-4 overflow-y-scroll h-[90vh]">
-          <h3 className="text-[22px] font-Poppins pb-2">Overview</h3>
-          <div className="w-full block 800px:flex items-center justify-between">
-            <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
-              <div className="flex items-center">
-                <AiOutlineMoneyCollect
-                  size={30}
-                  className="mr-2"
-                  fill="#00000085"
-                />
-                <h3
-                  className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-                >
-                  Total Earning
-                </h3>
+        <div className="w-full p-0 md:p-4 overflow-y-scroll min-h-[80vh]">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-10">
+            {/* Total Earning */}
+            <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 flex flex-col items-start">
+              <div className="flex items-center mb-2">
+                <AiOutlineMoneyCollect size={28} className="sm:w-8 sm:h-8 text-[#4F8CFF] mr-2" />
+                <span className="text-base sm:text-lg font-semibold text-gray-700">Total Earning</span>
               </div>
-              <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-                $ {adminBalance}
-              </h5>
+              <div className="text-xl sm:text-2xl font-bold text-[#4F8CFF]">${adminBalance}</div>
             </div>
-
-            <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
-              <div className="flex items-center">
-                <MdBorderClear size={30} className="mr-2" fill="#00000085" />
-                <h3
-                  className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-                >
-                  All Sellers
-                </h3>
+            {/* All Sellers */}
+            <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 flex flex-col items-start">
+              <div className="flex items-center mb-2">
+                <MdBorderClear size={28} className="sm:w-8 sm:h-8 text-[#A0C1FF] mr-2" />
+                <span className="text-base sm:text-lg font-semibold text-gray-700">All Sellers</span>
               </div>
-              <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-                {sellers && sellers.length}
-              </h5>
-              <Link to="/admin-sellers">
-                <h5 className="pt-4 pl-2 text-[#077f9c]">View Sellers</h5>
-              </Link>
+              <div className="text-xl sm:text-2xl font-bold text-[#A0C1FF]">{sellers && sellers.length}</div>
+              <Link to="/admin-sellers" className="mt-3 text-[#4F8CFF] hover:underline font-medium text-sm sm:text-base">View Sellers</Link>
             </div>
-
-            <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
-              <div className="flex items-center">
-                <AiOutlineMoneyCollect
-                  size={30}
-                  className="mr-2"
-                  fill="#00000085"
-                />
-                <h3
-                  className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
-                >
-                  All Orders
-                </h3>
+            {/* All Orders */}
+            <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 flex flex-col items-start sm:col-span-2 lg:col-span-1">
+              <div className="flex items-center mb-2">
+                <AiOutlineMoneyCollect size={28} className="sm:w-8 sm:h-8 text-[#F59E0B] mr-2" />
+                <span className="text-base sm:text-lg font-semibold text-gray-700">All Orders</span>
               </div>
-              <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-                {adminOrders && adminOrders.length}
-              </h5>
-              <Link to="/admin-orders">
-                <h5 className="pt-4 pl-2 text-[#077f9c]">View Orders</h5>
-              </Link>
+              <div className="text-xl sm:text-2xl font-bold text-[#F59E0B]">{adminOrders && adminOrders.length}</div>
+              <Link to="/admin-orders" className="mt-3 text-[#4F8CFF] hover:underline font-medium text-sm sm:text-base">View Orders</Link>
             </div>
           </div>
 
-          <br />
-          <h3 className="text-[22px] font-Poppins pb-2">Latest Orders</h3>
-          <div className="w-full min-h-[45vh] bg-white rounded">
+          {/* Latest Orders Table */}
+          <div className="mb-6">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Latest Orders</h3>
+            <div className="bg-white rounded-2xl shadow-lg p-4">
+              <div className="overflow-x-auto">
+                <div className="min-w-[700px]">
             <DataGrid
               rows={row}
               columns={columns}
               pageSize={4}
               disableSelectionOnClick
               autoHeight
-            />
+                    sx={{
+                      border: 0,
+                      fontFamily: 'Inter, system-ui, sans-serif',
+                      fontSize: 15,
+                      borderRadius: 2,
+                      '& .MuiDataGrid-columnHeaders': {
+                        background: '#F5F8FF',
+                        color: '#4F8CFF',
+                        fontWeight: 700,
+                        fontSize: 16,
+                      },
+                      '& .MuiDataGrid-row': {
+                        background: 'white',
+                      },
+                      '& .MuiDataGrid-cell': {
+                        borderBottom: '1px solid #F0F4F8',
+                      },
+                      '& .MuiDataGrid-footerContainer': {
+                        background: '#F5F8FF',
+                      },
+                      '& .MuiDataGrid-selectedRowCount': {
+                        visibility: 'hidden',
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}

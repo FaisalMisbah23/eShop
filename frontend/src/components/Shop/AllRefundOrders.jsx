@@ -27,11 +27,6 @@ const AllRefundOrders = () => {
       headerName: "Status",
       minWidth: 130,
       flex: 0.7,
-    //   cellClassName: (params) => {
-    //     return params.getValue(params.id, "status") === "Delivered"
-    //       ? "greenColor"
-    //       : "redColor";
-    //   },
     },
     {
       field: "itemsQty",
@@ -87,14 +82,51 @@ const AllRefundOrders = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
-          <DataGrid
-            rows={row}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            autoHeight
-          />
+        <div className="w-full overflow-y-scroll h-[90vh] p-4 sm:p-6 lg:p-8">
+          <div className="mb-6">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#4F8CFF] mb-2">Refunds</h1>
+            <p className="text-sm sm:text-base text-gray-600">Manage refund requests and processing status</p>
+          </div>
+          
+          <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6">
+            <div className="overflow-x-auto">
+              <div className="min-w-[700px]">
+                <DataGrid
+                  rows={row}
+                  columns={columns}
+                  pageSize={10}
+                  disableSelectionOnClick
+                  autoHeight
+                  sx={{
+                    '& .MuiDataGrid-root': {
+                      border: 'none',
+                    },
+                    '& .MuiDataGrid-cell': {
+                      borderBottom: '1px solid #f0f0f0',
+                    },
+                    '& .MuiDataGrid-columnHeaders': {
+                      backgroundColor: '#4F8CFF',
+                      color: 'white',
+                      borderBottom: 'none',
+                      '& .MuiDataGrid-columnHeader': {
+                        borderRight: '1px solid rgba(255, 255, 255, 0.2)',
+                      },
+                    },
+                    '& .MuiDataGrid-virtualScroller': {
+                      backgroundColor: '#ffffff',
+                    },
+                    '& .MuiDataGrid-footerContainer': {
+                      borderTop: '1px solid #f0f0f0',
+                      backgroundColor: '#f8f9fa',
+                    },
+                    '& .MuiDataGrid-row:hover': {
+                      backgroundColor: '#F5F8FF',
+                    },
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </>

@@ -1,9 +1,9 @@
 import axios from "axios";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { server } from "../server";
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
+import { AiOutlineCheckCircle, AiOutlineCloseCircle, AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const SellerActivationPage = () => {
     const { activation_token } = useParams();
@@ -26,30 +26,32 @@ const SellerActivationPage = () => {
                         setError(true);
                         toast.error(err.response.data.message);
                     });
-
             };
             sendRequest();
         }
-    }, []);
+    }, [activation_token]);
 
     return (
-        <div
-            style={{
-                width: "100%",
-                height: "100vh",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
-            {wait ? <p>Please wait, processing your request...</p> : (
-                error ? (
-                    <p> Your token is expired!</p>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#4F8CFF] via-[#A0C1FF] to-[#F5F8FF] px-4">
+            <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full flex flex-col items-center">
+                {wait ? (
+                    <>
+                        <AiOutlineLoading3Quarters className="animate-spin text-[#4F8CFF] mb-4" size={48} />
+                        <p className="text-lg font-semibold text-gray-700">Please wait, processing your request...</p>
+                    </>
+                ) : error ? (
+                    <>
+                        <AiOutlineCloseCircle className="text-red-500 mb-4" size={48} />
+                        <p className="text-lg font-semibold text-red-500">Your activation token is expired!</p>
+                    </>
                 ) : (
-                    <p>Your account has been created successfully!</p>
-                )
-            )}
-        </div >
+                    <>
+                        <AiOutlineCheckCircle className="text-green-500 mb-4" size={48} />
+                        <p className="text-lg font-semibold text-green-600">Your account has been created successfully!</p>
+                    </>
+                )}
+            </div>
+        </div>
     );
 };
 

@@ -1,69 +1,47 @@
 import React from "react";
-import styles from "../../styles/styles";
 
 const CheckoutSteps = ({ active }) => {
+  const steps = [
+    { id: 1, name: "Shipping", icon: "🚚" },
+    { id: 2, name: "Payment", icon: "💳" },
+    { id: 3, name: "Success", icon: "✅" }
+  ];
+
   return (
     <div className="w-full flex justify-center">
-      <div className="w-[90%] 800px:w-[50%] flex items-center flex-wrap">
-        <div className={`${styles.normalFlex}`}>
-          <div className={`${styles.cart_button}`}>
-            <span className={`${styles.cart_button_text}`}>1.Shipping</span>
+      <div className="w-full max-w-2xl flex items-center justify-between">
+        {steps.map((step, index) => (
+          <div key={step.id} className="flex items-center">
+            {/* Step Circle */}
+            <div className="flex flex-col items-center">
+              <div
+                className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-semibold transition-all duration-300 ${
+                  active >= step.id
+                    ? "bg-[#4F8CFF] text-white shadow-lg"
+                    : "bg-gray-200 text-gray-500"
+                }`}
+              >
+                {step.icon}
+              </div>
+              <span
+                className={`text-sm font-medium mt-2 transition-colors duration-300 ${
+                  active >= step.id ? "text-[#4F8CFF]" : "text-gray-500"
+                }`}
+              >
+                {step.name}
+              </span>
+            </div>
+            
+            {/* Connector Line */}
+            {index < steps.length - 1 && (
+              <div
+                className={`w-16 h-1 mx-4 transition-all duration-300 ${
+                  active > step.id ? "bg-[#4F8CFF]" : "bg-gray-200"
+                }`}
+              />
+            )}
           </div>
-          <div
-            className={`${
-              active > 1
-                ? "w-[30px] 800px:w-[70px] h-[4px] !bg-[#f63b60]"
-                : "w-[30px] 800px:w-[70px] h-[4px] !bg-[#FDE1E6]"
-            }`}
-          />
-        </div>
-
-        <div className={`${styles.normalFlex}`}>
-          <div
-            className={`${
-              active > 1
-                ? `${styles.cart_button}`
-                : `${styles.cart_button} !bg-[#FDE1E6]`
-            }`}
-          >
-            <span
-              className={`${
-                active > 1
-                  ? `${styles.cart_button_text}`
-                  : `${styles.cart_button_text} !text-[#f63b60]`
-              }`}
-            >
-              2.Payment
-            </span>
-          </div>
-        </div>
-
-        <div className={`${styles.normalFlex}`}>
-          <div
-            className={`${
-              active > 3
-                ? "w-[30px] 800px:w-[70px] h-[4px] !bg-[#f63b60]"
-                : "w-[30px] 800px:w-[70px] h-[4px] !bg-[#FDE1E6]"
-            }`}
-          />
-          <div
-            className={`${
-              active > 2
-                ? `${styles.cart_button}`
-                : `${styles.cart_button} !bg-[#FDE1E6]`
-            }`}
-          >
-            <span
-              className={`${
-                active > 2
-                  ? `${styles.cart_button_text}`
-                  : `${styles.cart_button_text} !text-[#f63b60]`
-              }`}
-            >
-              3.Success
-            </span>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

@@ -46,6 +46,7 @@ import {
   AdminDashboardWithdraw,
 } from "./routes/AdminRoutes";
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
 import { loadUser, loadSeller } from "./redux/actions/user";
@@ -325,16 +326,16 @@ function App() {
           />
         </Routes>
         <ToastContainer
-          position="bottom-center"
-          autoClose={5000}
+          position="bottom-right"
+          autoClose={4000}
           hideProgressBar={false}
-          newestOnTop={false}
+          newestOnTop={true}
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="dark"
+          theme="light"
         />
       </BrowserRouter>
     </>

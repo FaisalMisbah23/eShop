@@ -174,9 +174,10 @@ const Payment = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center py-8">
-      <div className="w-[90%] 1000px:w-[70%] block 800px:flex">
-        <div className="w-full 800px:w-[65%]">
+    <div className="w-full max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Payment Methods */}
+        <div className="lg:col-span-2">
           <PaymentInfo
             user={user}
             open={open}
@@ -187,7 +188,9 @@ const Payment = () => {
             cashOnDeliveryHandler={cashOnDeliveryHandler}
           />
         </div>
-        <div className="w-full 800px:w-[35%] 800px:mt-0 mt-8">
+        
+        {/* Order Summary */}
+        <div className="lg:col-span-1">
           <CartData orderData={orderData} />
         </div>
       </div>
@@ -207,53 +210,61 @@ const PaymentInfo = ({
   const [select, setSelect] = useState(1);
 
   return (
-    <div className="w-full 800px:w-[95%] bg-[#fff] rounded-md p-5 pb-8">
-      {/* select buttons */}
-      <div>
-        <div className="flex w-full pb-5 border-b mb-2">
-          <div
-            className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-[#1d1a1ab4] relative flex items-center justify-center"
+    <div className="bg-white rounded-2xl shadow-lg p-8">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 bg-[#4F8CFF] rounded-full flex items-center justify-center">
+          <span className="text-white text-lg">💳</span>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900">Payment Methods</h2>
+      </div>
+
+      {/* Payment Options */}
+      <div className="space-y-6">
+        {/* Credit Card Option */}
+        <div className="border-2 border-gray-200 rounded-xl p-6 hover:border-[#4F8CFF] transition-colors">
+          <div className="flex items-center gap-3 mb-4">
+            <div
+              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition-colors ${
+                select === 1 
+                  ? "border-[#4F8CFF] bg-[#4F8CFF]" 
+                  : "border-gray-300"
+              }`}
             onClick={() => setSelect(1)}
           >
-            {select === 1 ? (
-              <div className="w-[13px] h-[13px] bg-[#1d1a1acb] rounded-full" />
-            ) : null}
-          </div>
-          <h4 className="text-[18px] pl-2 font-[600] text-[#000000b1]">
-            Pay with Debit/credit card
-          </h4>
+              {select === 1 && (
+                <div className="w-2 h-2 bg-white rounded-full" />
+              )}
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">Credit/Debit Card</h3>
         </div>
 
-        {/* pay with card */}
-        {select === 1 ? (
-          <div className="w-full flex border-b">
-            <form className="w-full" onSubmit={paymentHandler}>
-              <div className="w-full flex pb-3">
-                <div className="w-[50%]">
-                  <label className="block pb-2">Name On Card</label>
+          {select === 1 && (
+            <form onSubmit={paymentHandler} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Name on Card
+                  </label>
                   <input
                     required
                     value={user && user.name}
-                    className={`${styles.input} !w-[95%]`}
+                    className="w-full px-4 py-3 border-2 border-[#A0C1FF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-transparent transition-colors"
                   />
                 </div>
-                <div className="w-[50%]">
-                  <label className="block pb-2">Exp Date</label>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Expiry Date
+                  </label>
                   <CardExpiryElement
-                    className={`${styles.input}`}
+                    className="w-full px-4 py-3 border-2 border-[#A0C1FF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-transparent transition-colors"
                     options={{
                       style: {
                         base: {
-                          fontSize: "19px",
-                          lineHeight: 1.5,
-                          color: "#444",
+                          fontSize: "16px",
+                          color: "#374151",
                         },
                         empty: {
-                          color: "#3a120a",
-                          backgroundColor: "transparent",
-                          "::placeholder": {
-                            color: "#444",
-                          },
+                          color: "#9CA3AF",
                         },
                       },
                     }}
@@ -261,97 +272,95 @@ const PaymentInfo = ({
                 </div>
               </div>
 
-              <div className="w-full flex pb-3">
-                <div className="w-[50%]">
-                  <label className="block pb-2">Card No</label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Card Number
+                  </label>
                   <CardNumberElement
-                    className={`${styles.input} !h-[35px] !w-[95%]`}
+                    className="w-full px-4 py-3 border-2 border-[#A0C1FF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-transparent transition-colors"
                     options={{
                       style: {
                         base: {
-                          fontSize: "19px",
-                          lineHeight: 1.5,
-                          color: "#444",
+                          fontSize: "16px",
+                          color: "#374151",
                         },
                         empty: {
-                          color: "#3a120a",
-                          backgroundColor: "transparent",
-                          "::placeholder": {
-                            color: "#444",
-                          },
+                          color: "#9CA3AF",
                         },
                       },
                     }}
-                  />{" "}
+                  />
                 </div>
-                <div className="w-[50%]">
-                  <label className="block pb-2">CVC</label>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    CVC
+                  </label>
                   <CardCvcElement
-                    className={`${styles.input} !h-[35px]`}
+                    className="w-full px-4 py-3 border-2 border-[#A0C1FF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-transparent transition-colors"
                     options={{
                       style: {
                         base: {
-                          fontSize: "19px",
-                          lineHeight: 1.5,
-                          color: "#444",
+                          fontSize: "16px",
+                          color: "#374151",
                         },
                         empty: {
-                          color: "#3a120a",
-                          backgroundColor: "transparent",
-                          "::placeholder": {
-                            color: "#444",
-                          },
+                          color: "#9CA3AF",
                         },
                       },
                     }}
-                  />{" "}
+                  />
                 </div>
               </div>
-              <input
-                type="submit"
-                value="Submit"
-                className={`${styles.button} !bg-[#f63b60] text-[#fff] h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
-              />
-            </form>
-          </div>
-        ) : null}
-      </div>
 
-      <br />
-      {/* paypal payment */}
-      <div>
-        <div className="flex w-full pb-5 border-b mb-2">
-          <div
-            className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-[#1d1a1ab4] relative flex items-center justify-center"
-            onClick={() => setSelect(2)}
-          >
-            {select === 2 ? (
-              <div className="w-[13px] h-[13px] bg-[#1d1a1acb] rounded-full" />
-            ) : null}
-          </div>
-          <h4 className="text-[18px] pl-2 font-[600] text-[#000000b1]">
-            Pay with Paypal
-          </h4>
+              <button
+                type="submit"
+                className="w-full bg-[#4F8CFF] hover:bg-[#2563eb] text-white py-3 rounded-lg font-semibold transition-colors duration-200"
+              >
+                Pay Now
+              </button>
+            </form>
+          )}
         </div>
 
-        {/* pay with card */}
-        {select === 2 ? (
-          <div className="w-full flex border-b">
+        {/* PayPal Option */}
+        <div className="border-2 border-gray-200 rounded-xl p-6 hover:border-[#4F8CFF] transition-colors">
+          <div className="flex items-center gap-3 mb-4">
             <div
-              className={`${styles.button} !bg-[#f63b60] text-white h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
-              onClick={() => setOpen(true)}
+              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition-colors ${
+                select === 2 
+                  ? "border-[#4F8CFF] bg-[#4F8CFF]" 
+                  : "border-gray-300"
+              }`}
+              onClick={() => setSelect(2)}
             >
-              Pay Now
+              {select === 2 && (
+                <div className="w-2 h-2 bg-white rounded-full" />
+              )}
             </div>
+            <h3 className="text-lg font-semibold text-gray-900">PayPal</h3>
+          </div>
+
+          {select === 2 && (
+            <div>
+              <button
+                className="w-full bg-[#4F8CFF] hover:bg-[#2563eb] text-white py-3 rounded-lg font-semibold transition-colors duration-200"
+                onClick={() => setOpen(true)}
+              >
+                Pay with PayPal
+              </button>
+              
             {open && (
-              <div className="w-full fixed top-0 left-0 bg-[#00000039] h-screen flex items-center justify-center z-[99999]">
-                <div className="w-full 800px:w-[40%] h-screen 800px:h-[80vh] bg-white rounded-[5px] shadow flex flex-col justify-center p-8 relative overflow-y-scroll">
-                  <div className="w-full flex justify-end p-3">
-                    <RxCross1
-                      size={30}
-                      className="cursor-pointer absolute top-3 right-3"
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto">
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="text-xl font-bold text-gray-900">PayPal Payment</h3>
+                      <button
                       onClick={() => setOpen(false)}
-                    />
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <RxCross1 size={24} />
+                      </button>
                   </div>
                   <PayPalScriptProvider
                     options={{
@@ -369,38 +378,43 @@ const PaymentInfo = ({
               </div>
             )}
           </div>
-        ) : null}
+          )}
       </div>
 
-      <br />
-      {/* cash on delivery */}
-      <div>
-        <div className="flex w-full pb-5 border-b mb-2">
-          <div
-            className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-[#1d1a1ab4] relative flex items-center justify-center"
+        {/* Cash on Delivery Option */}
+        <div className="border-2 border-gray-200 rounded-xl p-6 hover:border-[#4F8CFF] transition-colors">
+          <div className="flex items-center gap-3 mb-4">
+            <div
+              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition-colors ${
+                select === 3 
+                  ? "border-[#4F8CFF] bg-[#4F8CFF]" 
+                  : "border-gray-300"
+              }`}
             onClick={() => setSelect(3)}
           >
-            {select === 3 ? (
-              <div className="w-[13px] h-[13px] bg-[#1d1a1acb] rounded-full" />
-            ) : null}
-          </div>
-          <h4 className="text-[18px] pl-2 font-[600] text-[#000000b1]">
-            Cash on Delivery
-          </h4>
+              {select === 3 && (
+                <div className="w-2 h-2 bg-white rounded-full" />
+              )}
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">Cash on Delivery</h3>
         </div>
 
-        {/* pay with card */}
-        {select === 3 ? (
-          <div className="w-full flex">
-            <form className="w-full" onSubmit={cashOnDeliveryHandler}>
-              <input
+          {select === 3 && (
+            <div className="space-y-4">
+              <p className="text-gray-600">
+                Pay with cash when your order is delivered.
+              </p>
+              <form onSubmit={cashOnDeliveryHandler}>
+                <button
                 type="submit"
-                value="Confirm"
-                className={`${styles.button} !bg-[#f63b60] text-[#fff] h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
-              />
+                  className="w-full bg-[#4F8CFF] hover:bg-[#2563eb] text-white py-3 rounded-lg font-semibold transition-colors duration-200"
+                >
+                  Confirm Order
+                </button>
             </form>
           </div>
-        ) : null}
+          )}
+        </div>
       </div>
     </div>
   );
@@ -409,27 +423,48 @@ const PaymentInfo = ({
 const CartData = ({ orderData }) => {
   const shipping = orderData?.shipping?.toFixed(2);
   return (
-    <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
-      <div className="flex justify-between">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">subtotal:</h3>
-        <h5 className="text-[18px] font-[600]">${orderData?.subTotalPrice}</h5>
+    <div className="bg-white rounded-2xl shadow-lg p-8">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 bg-[#4F8CFF] rounded-full flex items-center justify-center">
+          <span className="text-white text-lg">📋</span>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900">Order Summary</h2>
       </div>
-      <br />
-      <div className="flex justify-between">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">shipping:</h3>
-        <h5 className="text-[18px] font-[600]">${shipping}</h5>
+      
+      {/* Price Breakdown */}
+      <div className="space-y-4 mb-6">
+        <div className="flex justify-between items-center py-2">
+          <span className="text-gray-600">Subtotal:</span>
+          <span className="font-semibold text-gray-900">${orderData?.subTotalPrice}</span>
+        </div>
+        
+        <div className="flex justify-between items-center py-2">
+          <span className="text-gray-600">Shipping:</span>
+          <span className="font-semibold text-gray-900">${shipping}</span>
+        </div>
+        
+        <div className="flex justify-between items-center py-2">
+          <span className="text-gray-600">Discount:</span>
+          <span className="font-semibold text-green-600">
+            {orderData?.discountPrice ? "-$" + orderData.discountPrice : "-"}
+          </span>
+        </div>
+        
+        <div className="border-t border-gray-200 pt-4">
+          <div className="flex justify-between items-center">
+            <span className="text-lg font-semibold text-gray-900">Total:</span>
+            <span className="text-2xl font-bold text-[#4F8CFF]">${orderData?.totalPrice}</span>
+          </div>
+        </div>
       </div>
-      <br />
-      <div className="flex justify-between border-b pb-3">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
-        <h5 className="text-[18px] font-[600]">
-          {orderData?.discountPrice ? "$" + orderData.discountPrice : "-"}
-        </h5>
+      
+      {/* Security Badge */}
+      <div className="mt-6 pt-6 border-t border-gray-200">
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <span className="text-green-500">🔒</span>
+          <span>Secure payment processing</span>
+        </div>
       </div>
-      <h5 className="text-[18px] font-[600] text-end pt-3">
-        ${orderData?.totalPrice}
-      </h5>
-      <br />
     </div>
   );
 };

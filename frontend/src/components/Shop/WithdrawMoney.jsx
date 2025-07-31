@@ -103,65 +103,68 @@ const WithdrawMoney = () => {
   };
 
   const availableBalance = seller?.availableBalance.toFixed(2);
-  // const availableBalance = 1000;
 
   return (
-    <div className="w-full h-[90vh] p-8">
-      <div className="w-full bg-white h-full rounded flex items-center justify-center flex-col">
-        <h5 className="text-[20px] pb-4">
-          Available Balance: ${availableBalance}
-        </h5>
-        <div
-          className={`${styles.button} text-white !h-[42px] !rounded`}
-          onClick={() => (availableBalance < 50 ? error() : setOpen(true))}
-        >
-          Withdraw
+    <div className="w-full overflow-y-scroll h-[90vh] p-8">
+      <div className="mb-8">
+        <h3 className="text-3xl font-bold text-[#4F8CFF] mb-2">Withdraw Money</h3>
+        <p className="text-gray-600">Manage your earnings and withdrawal methods</p>
+      </div>
+      
+      <div className="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto">
+        <div className="text-center">
+          <h5 className="text-2xl font-bold text-[#4F8CFF] mb-4">
+            Available Balance: ${availableBalance}
+          </h5>
+          <button
+            className="px-8 py-3 bg-[#4F8CFF] hover:bg-[#2563eb] text-white font-semibold rounded-lg shadow transition-colors duration-200"
+            onClick={() => (availableBalance < 50 ? error() : setOpen(true))}
+          >
+            Withdraw Money
+          </button>
         </div>
       </div>
+
       {open && (
-        <div className="w-full h-screen z-[9999] fixed top-0 left-0 flex items-center justify-center bg-[#0000004e]">
-          <div
-            className={`w-[95%] 800px:w-[50%] bg-white shadow rounded ${
-              paymentMethod ? "h-[80vh] overflow-y-scroll" : "h-[unset]"
-            } min-h-[40vh] p-3`}
-          >
-            <div className="w-full flex justify-end">
-              <RxCross1
-                size={25}
-                onClick={() => setOpen(false) || setPaymentMethod(false)}
-                className="cursor-pointer"
-              />
-            </div>
-            {paymentMethod ? (
-              <div>
-                <h3 className="text-[22px] font-Poppins text-center font-[600]">
-                  Add new Withdraw Method:
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-bold text-[#4F8CFF]">
+                  {paymentMethod ? "Add Withdraw Method" : "Withdraw Money"}
                 </h3>
-                <form onSubmit={handleSubmit}>
+                <button
+                  onClick={() => setOpen(false) || setPaymentMethod(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <RxCross1 size={24} className="text-gray-500" />
+                </button>
+              </div>
+
+              {paymentMethod ? (
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Bank Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
-                      name=""
                       required
                       value={bankInfo.bankName}
                       onChange={(e) =>
                         setBankInfo({ ...bankInfo, bankName: e.target.value })
                       }
-                      id=""
                       placeholder="Enter your Bank name!"
-                      className={`${styles.input} mt-2`}
+                      className="w-full px-4 py-3 border border-[#A0C1FF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-[#4F8CFF] transition-colors"
                     />
                   </div>
-                  <div className="pt-2">
-                    <label>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Bank Country <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
-                      name=""
                       value={bankInfo.bankCountry}
                       onChange={(e) =>
                         setBankInfo({
@@ -169,20 +172,18 @@ const WithdrawMoney = () => {
                           bankCountry: e.target.value,
                         })
                       }
-                      id=""
                       required
                       placeholder="Enter your bank Country!"
-                      className={`${styles.input} mt-2`}
+                      className="w-full px-4 py-3 border border-[#A0C1FF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-[#4F8CFF] transition-colors"
                     />
                   </div>
-                  <div className="pt-2">
-                    <label>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Bank Swift Code <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
-                      name=""
-                      id=""
                       required
                       value={bankInfo.bankSwiftCode}
                       onChange={(e) =>
@@ -192,19 +193,16 @@ const WithdrawMoney = () => {
                         })
                       }
                       placeholder="Enter your Bank Swift Code!"
-                      className={`${styles.input} mt-2`}
+                      className="w-full px-4 py-3 border border-[#A0C1FF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-[#4F8CFF] transition-colors"
                     />
                   </div>
 
-                  <div className="pt-2">
-                    <label>
-                      Bank Account Number{" "}
-                      <span className="text-red-500">*</span>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Bank Account Number <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="number"
-                      name=""
-                      id=""
                       value={bankInfo.bankAccountNumber}
                       onChange={(e) =>
                         setBankInfo({
@@ -214,16 +212,16 @@ const WithdrawMoney = () => {
                       }
                       required
                       placeholder="Enter your bank account number!"
-                      className={`${styles.input} mt-2`}
+                      className="w-full px-4 py-3 border border-[#A0C1FF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-[#4F8CFF] transition-colors"
                     />
                   </div>
-                  <div className="pt-2">
-                    <label>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Bank Holder Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
-                      name=""
                       required
                       value={bankInfo.bankHolderName}
                       onChange={(e) =>
@@ -232,21 +230,18 @@ const WithdrawMoney = () => {
                           bankHolderName: e.target.value,
                         })
                       }
-                      id=""
                       placeholder="Enter your bank Holder name!"
-                      className={`${styles.input} mt-2`}
+                      className="w-full px-4 py-3 border border-[#A0C1FF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-[#4F8CFF] transition-colors"
                     />
                   </div>
 
-                  <div className="pt-2">
-                    <label>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Bank Address <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
-                      name=""
                       required
-                      id=""
                       value={bankInfo.bankAddress}
                       onChange={(e) =>
                         setBankInfo({
@@ -255,81 +250,85 @@ const WithdrawMoney = () => {
                         })
                       }
                       placeholder="Enter your bank address!"
-                      className={`${styles.input} mt-2`}
+                      className="w-full px-4 py-3 border border-[#A0C1FF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-[#4F8CFF] transition-colors"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className={`${styles.button} mb-3 text-white`}
+                    className="w-full py-3 px-6 bg-[#4F8CFF] hover:bg-[#2563eb] text-white font-semibold rounded-lg shadow transition-colors duration-200"
                   >
-                    Add
+                    Add Withdraw Method
                   </button>
                 </form>
-              </div>
-            ) : (
-              <>
-                <h3 className="text-[22px] font-Poppins">
-                  Available Withdraw Methods:
-                </h3>
+              ) : (
+                <div className="space-y-6">
+                  <h3 className="text-xl font-semibold text-gray-800">
+                    Available Withdraw Methods:
+                  </h3>
 
-                {seller && seller?.withdrawMethod ? (
-                  <div>
-                    <div className="800px:flex w-full justify-between items-center">
-                      <div className="800px:w-[50%]">
-                        <h5>
-                          Account Number:{" "}
-                          {"*".repeat(
-                            seller?.withdrawMethod.bankAccountNumber.length - 3
-                          ) +
-                            seller?.withdrawMethod.bankAccountNumber.slice(-3)}
-                        </h5>
-                        <h5>Bank Name: {seller?.withdrawMethod.bankName}</h5>
+                  {seller && seller?.withdrawMethod ? (
+                    <div className="space-y-4">
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        <div className="flex justify-between items-start">
+                          <div className="space-y-2">
+                            <h5 className="font-medium">
+                              Account Number:{" "}
+                              {"*".repeat(
+                                seller?.withdrawMethod.bankAccountNumber.length - 3
+                              ) +
+                                seller?.withdrawMethod.bankAccountNumber.slice(-3)}
+                            </h5>
+                            <h5 className="text-gray-600">
+                              Bank: {seller?.withdrawMethod.bankName}
+                            </h5>
+                          </div>
+                          <button
+                            onClick={() => deleteHandler()}
+                            className="p-2 hover:bg-red-100 rounded-lg transition-colors"
+                          >
+                            <AiOutlineDelete size={20} className="text-red-500" />
+                          </button>
+                        </div>
                       </div>
-                      <div className="800px:w-[50%]">
-                        <AiOutlineDelete
-                          size={25}
-                          className="cursor-pointer"
-                          onClick={() => deleteHandler()}
-                        />
+
+                      <div className="space-y-4">
+                        <h4 className="font-semibold text-gray-800">
+                          Available Balance: ${availableBalance}
+                        </h4>
+                        <div className="flex gap-4">
+                          <input
+                            type="number"
+                            placeholder="Amount..."
+                            value={withdrawAmount}
+                            onChange={(e) => setWithdrawAmount(e.target.value)}
+                            className="flex-1 px-4 py-3 border border-[#A0C1FF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-[#4F8CFF] transition-colors"
+                          />
+                          <button
+                            className="px-6 py-3 bg-[#4F8CFF] hover:bg-[#2563eb] text-white font-semibold rounded-lg shadow transition-colors duration-200"
+                            onClick={withdrawHandler}
+                          >
+                            Withdraw
+                          </button>
+                        </div>
                       </div>
                     </div>
-                    <br />
-                    <h4>Available Balance: {availableBalance}$</h4>
-                    <br />
-                    <div className="800px:flex w-full items-center">
-                      <input
-                        type="number"
-                        placeholder="Amount..."
-                        value={withdrawAmount}
-                        onChange={(e) => setWithdrawAmount(e.target.value)}
-                        className="800px:w-[100px] w-[full] border 800px:mr-3 p-1 rounded"
-                      />
-                      <div
-                        className={`${styles.button} !h-[42px] text-white`}
-                        onClick={withdrawHandler}
-                      >
-                        Withdraw
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <p className="text-[18px] pt-2">
-                      No Withdraw Methods available!
-                    </p>
-                    <div className="w-full flex items-center">
-                      <div
-                        className={`${styles.button} text-[#fff] text-[18px] mt-4`}
+                  ) : (
+                    <div className="text-center space-y-4">
+                      <p className="text-gray-600">
+                        No Withdraw Methods available!
+                      </p>
+                      <button
+                        className="px-6 py-3 bg-[#4F8CFF] hover:bg-[#2563eb] text-white font-semibold rounded-lg shadow transition-colors duration-200"
                         onClick={() => setPaymentMethod(true)}
                       >
-                        Add new
-                      </div>
+                        Add Withdraw Method
+                      </button>
                     </div>
-                  </div>
-                )}
-              </>
-            )}
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

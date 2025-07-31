@@ -4,23 +4,20 @@ import { Link } from "react-router-dom"
 
 const Hero = () => {
     return (
-        <div className={`relative min-h-[70vh] 800px:min-h-[100vh] w-full bg-no-repeat ${styles.normalFlex}`}
-            style={{ backgroundImage: "url(https://themes.rslahmed.dev/rafcart/assets/images/banner-2.jpg)" }}
-        >
-            <div className={` ${styles.section} w-[90%] 800px:w-[60%]`}>
-                <h1 className="text-[35px] leading-[1.2] 800px:text-[60px] font-[600] text-[#3d3a3a] capitalize">
-                    Best Collection for <br />Home Decorations
+        <div className="relative min-h-[70vh] 800px:min-h-[100vh] w-full flex items-center justify-center bg-gradient-to-br from-[#4F8CFF] via-[#A0C1FF] to-[#F5F8FF] pt-16">
+            {/* Overlay for text clarity */}
+            <div className="absolute inset-0 bg-black bg-opacity-20 z-0 rounded-b-[60px]" />
+            <div className="relative z-10 w-[90%] 800px:w-[60%] flex flex-col items-center text-center py-12">
+                <h1 className="text-[40px] leading-[1.1] 800px:text-[64px] font-extrabold text-white drop-shadow-lg mb-4 font-sans">
+                    Welcome to eShopZone
                 </h1>
-                <p className="pt-5 text-[16px] font-[400] font-[Poppins] text-[#000000ba]">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae,
-                    assumenda? Quisquam itaque <br /> exercitationem labore vel, dolore
-                    quidem asperiores, laudantium temporibus soluta optio consequatur{" "}
-                    <br /> aliquam deserunt officia. Dolorum saepe nulla provident.
+                <p className="pt-2 text-[18px] 800px:text-[22px] font-medium text-white/90 mb-8 max-w-2xl">
+                    Your ultimate online marketplace for everything you need. Discover amazing products from trusted sellers, enjoy great deals, and shop with confidence.
                 </p>
                 <Link to="/products" className="inline-block">
-                    <div className={`${styles.button} mt-5`}>
-                        <span className="text-[#fff] font-[Poppins] text-[18px]">
-                            Shop Now
+                    <div className="px-8 py-3 bg-white hover:bg-gray-100 text-[#4F8CFF] transition-colors duration-200 rounded-full shadow-lg">
+                        <span className="font-semibold text-[20px] tracking-wide">
+                            Start Shopping
                         </span>
                     </div>
                 </Link>

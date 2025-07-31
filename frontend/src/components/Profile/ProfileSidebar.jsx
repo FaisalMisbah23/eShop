@@ -25,116 +25,48 @@ const ProfileSidebar = ({ setActive, active }) => {
         console.log(error.response.data.message);
       });
   };
+
+  const menuItems = [
+    { id: 1, icon: RxPerson, label: "Profile" },
+    { id: 2, icon: HiOutlineShoppingBag, label: "Orders" },
+    { id: 3, icon: HiOutlineReceiptRefund, label: "Refunds" },
+    { id: 4, icon: AiOutlineMessage, label: "Inbox" },
+    { id: 5, icon: MdOutlineTrackChanges, label: "Track Order" },
+    { id: 6, icon: RiLockPasswordLine, label: "Change Password" },
+    { id: 7, icon: TbAddressBook, label: "Address" },
+  ];
   return (
-    <div className="w-full bg-white shadow-sm rounded-[10px] p-4 pt-8 h-[90vh]">
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(1)}
-      >
-        <RxPerson size={20} color={active === 1 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 1 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Profile
-        </span>
+    <div className="bg-white rounded-2xl shadow-lg p-6 h-fit">
+      <div className="space-y-2">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = active === item.id;
+          const isInbox = item.id === 4;
+          
+          return (
+            <div
+              key={item.id}
+              className={`flex items-center cursor-pointer p-4 rounded-xl transition-all duration-200 ${
+                isActive
+                  ? "bg-gradient-to-r from-[#4F8CFF] to-[#A0C1FF] text-white shadow-md"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-[#4F8CFF]"
+              }`}
+              onClick={() => isInbox ? navigate("/inbox") : setActive(item.id)}
+            >
+              <Icon size={20} className="flex-shrink-0" />
+              <span className="pl-3 font-medium">{item.label}</span>
       </div>
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(2)}
-      >
-        <HiOutlineShoppingBag size={20} color={active === 2 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 2 ? "text-[red]" : ""
-          } 800px:block hidden`}
+          );
+        })}
+        
+        {/* Logout Button */}
+        <div
+          className="flex items-center cursor-pointer p-4 rounded-xl transition-all duration-200 text-red-500 hover:bg-red-50 hover:text-red-600 mt-4 border-t border-gray-100 pt-4"
+          onClick={logoutHandler}
         >
-          Orders
-        </span>
+          <AiOutlineLogin size={20} className="flex-shrink-0" />
+          <span className="pl-3 font-medium">Log out</span>
       </div>
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(3)}
-      >
-        <HiOutlineReceiptRefund size={20} color={active === 3 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 3 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Refunds
-        </span>
-      </div>
-
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(4) || navigate("/inbox")}
-      >
-        <AiOutlineMessage size={20} color={active === 4 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 4 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Inbox
-        </span>
-      </div>
-
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(5)}
-      >
-        <MdOutlineTrackChanges size={20} color={active === 5 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 5 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Track Order
-        </span>
-      </div>
-
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(6)}
-      >
-        <RiLockPasswordLine size={20} color={active === 6 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 6 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Change Password
-        </span>
-      </div>
-
-      <div
-        className="flex items-center cursor-pointer w-full mb-8"
-        onClick={() => setActive(7)}
-      >
-        <TbAddressBook size={20} color={active === 7 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 7 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Address
-        </span>
-      </div>
-
-      <div
-        className="single_item flex items-center cursor-pointer w-full mb-8"
-        onClick={logoutHandler}
-      >
-        <AiOutlineLogin size={20} color={active === 8 ? "red" : ""} />
-        <span
-          className={`pl-3 ${
-            active === 8 ? "text-[red]" : ""
-          } 800px:block hidden`}
-        >
-          Log out
-        </span>
       </div>
     </div>
   );

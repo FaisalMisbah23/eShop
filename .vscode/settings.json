@@ -1,5 +1,19 @@
 {
     "cSpell.words": [
         "footercompany"
-    ]
+    ],
+    "files.associations": {
+        "iostream": "cpp",
+        "charconv": "cpp",
+        "optional": "cpp",
+        "format": "cpp",
+        "ratio": "cpp",
+        "system_error": "cpp",
+        "array": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "stack": "cpp"
+    }
 }

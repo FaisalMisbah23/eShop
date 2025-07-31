@@ -206,47 +206,67 @@ const DashboardMessages = () => {
   }, [messages]);
 
   return (
-    <div className="w-[90%] bg-white m-5 h-[85vh] overflow-y-scroll rounded">
-      {!open && (
-        <>
-          <h1 className="text-center text-[30px] py-3 font-Poppins">
-            All Messages
-          </h1>
-          {/* All messages list */}
-          {conversations &&
-            conversations.map((item, index) => (
-              <MessageList
-                data={item}
-                key={index}
-                index={index}
-                setOpen={setOpen}
-                setCurrentChat={setCurrentChat}
-                me={seller._id}
-                setUserData={setUserData}
-                userData={userData}
-                online={onlineCheck(item)}
-                setActiveStatus={setActiveStatus}
-              />
-            ))}
-        </>
-      )}
+    <div className="w-full min-h-screen bg-gradient-to-br from-[#F5F8FF] via-[#EAF1FB] to-[#F5F8FF] py-10">
+      <div className="max-w-3xl mx-auto">
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Sidebar - Message List */}
+          <div className="w-full md:w-1/3 bg-white rounded-xl shadow p-4 h-[70vh] overflow-y-auto">
+            <h2 className="text-2xl font-bold text-[#4F8CFF] mb-4">Messages</h2>
+            {!open && (
+              <>
+                {conversations &&
+                  conversations.map((item, index) => (
+                    <MessageList
+                      data={item}
+                      key={index}
+                      index={index}
+                      setOpen={setOpen}
+                      setCurrentChat={setCurrentChat}
+                      me={seller._id}
+                      setUserData={setUserData}
+                      userData={userData}
+                      online={onlineCheck(item)}
+                      setActiveStatus={setActiveStatus}
+                    />
+                  ))}
+              </>
+            )}
+          </div>
 
-      {open && (
-        <SellerInbox
-          setOpen={setOpen}
-          newMessage={newMessage}
-          setNewMessage={setNewMessage}
-          sendMessageHandler={sendMessageHandler}
-          messages={messages}
-          sellerId={seller._id}
-          userData={userData}
-          activeStatus={activeStatus}
-          scrollRef={scrollRef}
-          setMessages={setMessages}
-          handleImageUpload={handleImageUpload}
-          loading={loading}
-        />
-      )}
+          {/* Chat Area */}
+          <div className="flex-1 bg-white rounded-xl shadow p-4 flex flex-col h-[70vh]">
+            {open && (
+              <SellerInbox
+                setOpen={setOpen}
+                newMessage={newMessage}
+                setNewMessage={setNewMessage}
+                sendMessageHandler={sendMessageHandler}
+                messages={messages}
+                sellerId={seller._id}
+                userData={userData}
+                activeStatus={activeStatus}
+                scrollRef={scrollRef}
+                setMessages={setMessages}
+                handleImageUpload={handleImageUpload}
+                loading={loading}
+              />
+            )}
+            {!open && (
+              <div className="flex-1 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-[#4F8CFF] to-[#A0C1FF] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-700 mb-2">Select a conversation</h3>
+                  <p className="text-gray-500">Choose a customer to start messaging</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -285,9 +305,11 @@ const MessageList = ({
 
   return (
     <div
-      className={`w-full flex p-3 px-3 ${
-        active === index ? "bg-[#00000010]" : "bg-transparent"
-      }  cursor-pointer`}
+      className={`w-full flex p-3 rounded-lg mb-2 transition-all duration-200 cursor-pointer ${
+        active === index 
+          ? "bg-gradient-to-r from-[#4F8CFF] to-[#A0C1FF] text-white shadow-lg" 
+          : "bg-gray-50 hover:bg-[#F5F8FF] hover:text-[#4F8CFF]"
+      }`}
       onClick={(e) =>
         setActive(index) ||
         handleClick(data._id) ||
@@ -300,17 +322,17 @@ const MessageList = ({
         <img
           src={`${user?.avatar?.url}`}
           alt=""
-          className="w-[50px] h-[50px] rounded-full"
+          className="w-[50px] h-[50px] rounded-full border-2 border-white shadow-md"
         />
         {online ? (
-          <div className="w-[12px] h-[12px] bg-green-400 rounded-full absolute top-[2px] right-[2px]" />
+          <div className="w-[12px] h-[12px] bg-green-400 rounded-full absolute top-[2px] right-[2px] border-2 border-white" />
         ) : (
-          <div className="w-[12px] h-[12px] bg-[#c7b9b9] rounded-full absolute top-[2px] right-[2px]" />
+          <div className="w-[12px] h-[12px] bg-gray-400 rounded-full absolute top-[2px] right-[2px] border-2 border-white" />
         )}
       </div>
-      <div className="pl-3">
-        <h1 className="text-[18px]">{user?.name}</h1>
-        <p className="text-[16px] text-[#000c]">
+      <div className="pl-3 flex-1">
+        <h1 className="text-[16px] font-semibold">{user?.name}</h1>
+        <p className={`text-[14px] ${active === index ? 'text-white/90' : 'text-gray-600'}`}>
           {data?.lastMessageId !== user?._id
             ? "You:"
             : user?.name?.split(" ")[0] + ": "}{" "}
@@ -339,34 +361,38 @@ const SellerInbox = ({
       {loading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm">
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 border-4 border-t-transparent border-[crimson] rounded-full animate-spin"></div>
-            <p className="mt-4 text-[crimson] font-medium">Uploading...</p>
+            <div className="w-12 h-12 border-4 border-t-transparent border-[#4F8CFF] rounded-full animate-spin"></div>
+            <p className="mt-4 text-[#4F8CFF] font-medium">Uploading...</p>
           </div>
         </div>
       )}
       <div className="w-full min-h-full flex flex-col justify-between">
         {/* message header */}
-        <div className="w-full flex p-3 items-center justify-between bg-slate-200">
-          <div className="flex">
+        <div className="w-full flex p-4 items-center justify-between bg-gradient-to-r from-[#4F8CFF] to-[#A0C1FF] text-white rounded-t-xl">
+          <div className="flex items-center">
             <img
               src={`${userData?.avatar?.url}`}
               alt=""
-              className="w-[60px] h-[60px] rounded-full"
+              className="w-[50px] h-[50px] rounded-full border-2 border-white shadow-md"
             />
             <div className="pl-3">
-              <h1 className="text-[18px] font-[600]">{userData?.name}</h1>
-              <h1>{activeStatus ? "Active Now" : ""}</h1>
+              <h1 className="text-[18px] font-semibold">{userData?.name}</h1>
+              <div className="flex items-center">
+                <div className={`w-2 h-2 rounded-full mr-2 ${activeStatus ? 'bg-green-400' : 'bg-gray-400'}`}></div>
+                <span className="text-sm opacity-90">{activeStatus ? "Active Now" : "Offline"}</span>
+              </div>
             </div>
           </div>
-          <AiOutlineArrowRight
-            size={20}
-            className="cursor-pointer"
+          <button
             onClick={() => setOpen(false)}
-          />
+            className="p-2 hover:bg-white/20 rounded-full transition-colors duration-200"
+          >
+            <AiOutlineArrowRight size={20} />
+          </button>
         </div>
 
         {/* messages */}
-        <div className="px-3 h-[65vh] py-3 overflow-y-scroll">
+        <div className="px-4 h-[50vh] py-4 overflow-y-scroll bg-gray-50">
           {messages &&
             messages.map((item, index) => {
               return (
@@ -379,29 +405,29 @@ const SellerInbox = ({
                   {item.sender !== sellerId && (
                     <img
                       src={`${userData?.avatar?.url}`}
-                      className="w-[40px] h-[40px] rounded-full mr-3"
+                      className="w-[35px] h-[35px] rounded-full mr-3 border-2 border-white shadow-sm"
                       alt=""
                     />
                   )}
                   {item.images && (
                     <img
                       src={`${item.images?.url}`}
-                      className="w-[300px] h-[300px] object-cover rounded-[10px] mr-2"
+                      className="w-[250px] h-[250px] object-cover rounded-xl mr-2 shadow-md"
                     />
                   )}
                   {item.text !== undefined && (
                     <div>
                       <div
-                        className={`w-max p-2 rounded ${
+                        className={`w-max p-3 rounded-2xl shadow-sm ${
                           item.sender === sellerId
-                            ? "bg-[#000]"
-                            : "bg-[#38c776]"
-                        } text-[#fff] h-min`}
+                            ? "bg-gradient-to-r from-[#4F8CFF] to-[#A0C1FF] text-white"
+                            : "bg-white text-gray-800 border border-gray-200"
+                        }`}
                       >
-                        <p>{item.text}</p>
+                        <p className="text-sm">{item.text}</p>
                       </div>
 
-                      <p className="text-[12px] text-[#000000d3] pt-1">
+                      <p className="text-[11px] text-gray-500 pt-1 ml-1">
                         {format(item.createdAt)}
                       </p>
                     </div>
@@ -414,10 +440,10 @@ const SellerInbox = ({
         {/* send message input */}
         <form
           aria-required={true}
-          className="p-3 relative w-full flex justify-between items-center"
+          className="p-4 relative w-full flex justify-between items-center bg-white rounded-b-xl border-t border-gray-200"
           onSubmit={sendMessageHandler}
         >
-          <div className="w-[30px]">
+          <div className="w-[40px]">
             <input
               type="file"
               name=""
@@ -425,24 +451,24 @@ const SellerInbox = ({
               className="hidden"
               onChange={handleImageUpload}
             />
-            <label htmlFor="image">
-              <TfiGallery className="cursor-pointer" size={20} />
+            <label htmlFor="image" className="cursor-pointer">
+              <TfiGallery className="text-[#4F8CFF] hover:text-[#2563eb] transition-colors duration-200" size={20} />
             </label>
           </div>
-          <div className="w-full">
+          <div className="w-full mx-3">
             <input
               type="text"
               required
-              placeholder="Enter your message..."
+              placeholder="Type your message..."
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              className={`${styles.input}`}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4F8CFF] focus:border-transparent"
             />
             <input type="submit" value="Send" className="hidden" id="send" />
             <label htmlFor="send">
               <AiOutlineSend
                 size={20}
-                className="absolute right-4 top-5 cursor-pointer"
+                className="absolute right-6 top-6 cursor-pointer text-[#4F8CFF] hover:text-[#2563eb] transition-colors duration-200"
               />
             </label>
           </div>

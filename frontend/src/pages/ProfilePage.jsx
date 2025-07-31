@@ -7,13 +7,22 @@ import ProfileContent from "../components/Profile/ProfileContent";
 const ProfilePage = () => {
     const [active, setActive] = useState(1);
     return (
-        <div>
+        <div className="min-h-screen bg-gradient-to-br from-[#F5F8FF] via-[#A0C1FF] to-[#4F8CFF]">
             <Header />
-            <div className={`${styles.section} flex bg-[#f5f5f5] py-10`}>
-                <div className="w-[50px] 800px:w-[335px] sticky 800px:mt-0 mt-[18%]">
-                    <ProfileSideBar active={active} setActive={setActive} />
+            {/* Hero Section */}
+            <div className="w-full py-8 px-4 flex flex-col items-center justify-center bg-gradient-to-r from-[#4F8CFF] to-[#A0C1FF]">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 text-center drop-shadow-lg">My Profile Dashboard</h1>
+                <p className="text-white text-base sm:text-lg text-center max-w-2xl">Manage your account, orders, and preferences</p>
+            </div>
+            <div className="max-w-7xl mx-auto px-4 py-8">
+                <div className="flex flex-col lg:flex-row gap-8">
+                    <div className="w-full lg:w-80">
+                        <ProfileSideBar active={active} setActive={setActive} />
+                    </div>
+                    <div className="flex-1">
+                        <ProfileContent active={active} />
+                    </div>
                 </div>
-                <ProfileContent active={active} />
             </div>
         </div>
     );

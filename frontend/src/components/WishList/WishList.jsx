@@ -22,40 +22,41 @@ const Wishlist = ({ setOpenWishlist }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
-      <div className="fixed top-0 right-0 h-full w-[80%] overflow-y-scroll 800px:w-[25%] bg-white flex flex-col justify-between shadow-sm">
-        {wishlist && wishlist.length === 0 ? (
-          <div className="w-full h-screen flex items-center justify-center">
-            <div className="flex w-full justify-end pt-5 pr-5 fixed top-3 right-3">
-              <RxCross1
-                size={25}
-                className="cursor-pointer"
-                onClick={() => setOpenWishlist(false)}
-              />
-            </div>
-            <h5>Wishlist Items is empty!</h5>
+    <div className="fixed top-0 left-0 w-full bg-black bg-opacity-50 h-screen z-50 flex justify-end">
+      <div className="w-full max-w-md h-full bg-white shadow-2xl flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-[#FFB800] to-[#FFD700] text-white">
+          <div className="flex items-center gap-3">
+            <AiOutlineHeart size={28} />
+            <h2 className="text-xl font-bold">Wishlist</h2>
           </div>
-        ) : (
-          <>
-            <div>
-              <div className="flex w-full justify-end pt-5 pr-5">
-                <RxCross1
-                  size={25}
-                  className="cursor-pointer"
-                  onClick={() => setOpenWishlist(false)}
-                />
-              </div>
-              {/* Item length */}
-              <div className={`${styles.normalFlex} p-4`}>
-                <AiOutlineHeart size={25} />
-                <h5 className="pl-2 text-[20px] font-[500]">
-                  {wishlist && wishlist.length} items
-                </h5>
+          <button
+            onClick={() => setOpenWishlist(false)}
+            className="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors"
+          >
+            <RxCross1 size={24} />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto">
+          {wishlist && wishlist.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full p-8">
+              <AiOutlineHeart size={64} className="text-gray-300 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">Your wishlist is empty</h3>
+              <p className="text-gray-500 text-center">Save your favorite products here!</p>
+            </div>
+          ) : (
+            <>
+              {/* Item count */}
+              <div className="p-4 bg-gray-50 border-b">
+                <p className="text-sm text-gray-600">
+                  {wishlist && wishlist.length} {wishlist.length === 1 ? 'item' : 'items'} in wishlist
+                </p>
               </div>
 
-              {/* cart Single Items */}
-              <br />
-              <div className="w-full border-t">
+              {/* Wishlist Items */}
+              <div className="flex-1">
                 {wishlist &&
                   wishlist.map((i, index) => (
                     <WishlistSingle
@@ -66,9 +67,9 @@ const Wishlist = ({ setOpenWishlist }) => {
                     />
                   ))}
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -79,31 +80,37 @@ const WishlistSingle = ({ data, removeFromWishlistHandler, addToCartHandler }) =
   const totalPrice = data.discountPrice * value;
 
   return (
-    <div className="border-b p-4">
-      <div className="w-full 800px:flex items-center">
-        <RxCross1
-          className="cursor-pointer 800px:mb-['unset'] 800px:ml-['unset'] mb-2 ml-2"
-          onClick={() => removeFromWishlistHandler(data)}
-        />
+    <div className="p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+      <div className="flex items-center gap-4">
+        {/* Product Image */}
         <img
           src={`${data?.images[0]?.url}`}
-          alt=""
-          className="w-[130px] h-min ml-2 mr-2 rounded-[5px]"
+          alt={data.name}
+          className="w-20 h-20 object-cover rounded-lg shadow-sm"
         />
-
-        <div className="pl-[5px]">
-          <h1>{data.name}</h1>
-          <h4 className="font-[600] pt-3 800px:pt-[3px] text-[17px] text-[#d02222] font-Roboto">
-            US${totalPrice}
-          </h4>
+        
+        {/* Product Details */}
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-gray-900 truncate">{data.name}</h3>
+          <p className="text-lg font-bold text-[#FFB800] mt-1">${totalPrice.toFixed(2)}</p>
         </div>
-        <div>
-          <BsCartPlus
-            size={20}
-            className="cursor-pointer"
-            tile="Add to cart"
+
+        {/* Actions */}
+        <div className="flex flex-col gap-2">
+          <button
             onClick={() => addToCartHandler(data)}
-          />
+            className="p-2 bg-[#4F8CFF] hover:bg-[#2563eb] text-white rounded-lg transition-colors"
+            title="Add to cart"
+          >
+            <BsCartPlus size={18} />
+          </button>
+          <button
+            onClick={() => removeFromWishlistHandler(data)}
+            className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+            title="Remove from wishlist"
+          >
+            <RxCross1 size={18} />
+          </button>
         </div>
       </div>
     </div>

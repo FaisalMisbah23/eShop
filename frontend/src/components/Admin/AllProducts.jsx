@@ -82,8 +82,8 @@ const AllProducts = () => {
     });
 
   return (
-    <>
-      <div className="w-full mx-8 pt-1 mt-10 bg-white">
+    <div className="w-full overflow-x-auto">
+      <div className="min-w-[700px]">
         <DataGrid
           rows={row}
           columns={columns}
@@ -92,7 +92,7 @@ const AllProducts = () => {
           autoHeight
         />
       </div>
-    </>
+    </div>
   );
 };
 

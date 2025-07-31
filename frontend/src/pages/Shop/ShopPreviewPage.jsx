@@ -1,20 +1,38 @@
 import React from "react";
-import styles from "../../styles/styles";
+import Header from "../../components/Layout/Header";
+import Footer from "../../components/Layout/Footer";
 import ShopInfo from "../../components/Shop/ShopInfo";
 import ShopProfileData from "../../components/Shop/ShopProfileData";
 
 const ShopPreviewPage = () => {
   return (
-    <div className={`${styles.section} bg-[#f5f5f5]`}>
-      <div className="w-full 800px:flex py-10 justify-between">
-        <div className="800px:w-[25%] bg-[#fff] rounded-[4px] shadow-sm 800px:overflow-y-scroll 800px:h-[90vh] 800px:sticky top-10 left-0 z-10">
-          <ShopInfo isOwner={false} />
-        </div>
-        <div className="800px:w-[72%] mt-5 800px:mt-['unset'] rounded-[4px]">
-          <ShopProfileData isOwner={false} />
+    <>
+      <Header activeHeading={3} />
+      
+      {/* Hero Section with Modern Theme */}
+      <div className="relative bg-gradient-to-r from-[#4F8CFF] via-[#A0C1FF] to-[#F5F8FF] pt-20 pb-12">
+        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+        <div className="relative max-w-7xl mx-auto px-4">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Shop Info Card */}
+            <div className="w-full lg:w-1/3">
+              <div className="bg-white rounded-2xl shadow-xl p-6 mb-6 lg:mb-0">
+                <ShopInfo isOwner={false} />
+              </div>
+            </div>
+            
+            {/* Shop Profile Data */}
+            <div className="w-full lg:w-2/3">
+              <div className="bg-white rounded-2xl shadow-xl p-6">
+                <ShopProfileData isOwner={false} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+
+      <Footer />
+    </>
   );
 };
 

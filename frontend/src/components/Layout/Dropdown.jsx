@@ -11,7 +11,7 @@ const Dropdown = ({ setDropdown, categoriesData }) => {
         window.location.reload();
     }
     return (
-        <div className="pb-4 w-[270px] bg-[#fff] absolute z-30 rounded-b-md shadow-sm">
+        <div className="bg-white rounded-lg shadow-lg p-4 z-50 max-h-72 overflow-y-auto">
             {categoriesData && categoriesData.map((i, index) => (<div
                 key={index}
                 onClick={() => handleSubmit(i)}

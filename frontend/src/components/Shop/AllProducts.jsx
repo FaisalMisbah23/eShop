@@ -50,7 +50,6 @@ const AllProducts = () => {
             minWidth: 80,
             flex: 0.5,
         },
-
         {
             field: "sold",
             headerName: "Sold out",
@@ -115,14 +114,45 @@ const AllProducts = () => {
             {isLoading ? (
                 <Loader />
             ) : (
-                <div className="w-full mx-8 pt-1 mt-10 bg-white">
-                    <DataGrid
-                        rows={row}
-                        columns={columns}
-                        pageSize={10}
-                        disableSelectionOnClick
-                        autoHeight
-                    />
+                <div className="w-full overflow-y-scroll h-[90vh] p-4 sm:p-6 lg:p-8">
+                    <div className="mb-6 sm:mb-8">
+                        <h3 className="text-2xl sm:text-3xl font-bold text-[#4F8CFF] mb-2">All Products</h3>
+                        <p className="text-sm sm:text-base text-gray-600">Manage and track all your shop products</p>
+                    </div>
+                    
+                    <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6">
+                        <div className="overflow-x-auto">
+                            <div className="min-w-[800px]">
+                                <DataGrid
+                                    rows={row}
+                                    columns={columns}
+                                    pageSize={10}
+                                    disableSelectionOnClick
+                                    autoHeight
+                                    sx={{
+                                        "& .MuiDataGrid-root": {
+                                            border: "none",
+                                        },
+                                        "& .MuiDataGrid-cell": {
+                                            borderBottom: "1px solid #f0f0f0",
+                                        },
+                                        "& .MuiDataGrid-columnHeaders": {
+                                            backgroundColor: "#F5F8FF",
+                                            color: "#4F8CFF",
+                                            fontWeight: "bold",
+                                        },
+                                        "& .MuiDataGrid-virtualScroller": {
+                                            backgroundColor: "#ffffff",
+                                        },
+                                        "& .MuiDataGrid-footerContainer": {
+                                            backgroundColor: "#F5F8FF",
+                                            borderTop: "1px solid #e0e0e0",
+                                        },
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
         </>
