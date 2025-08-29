@@ -26,7 +26,7 @@ jobs:
             --cache-to=type=local,dest=/tmp/.buildx-cache \
             --tag e-shop-backend:latest \
             --tag 275539518525.dkr.ecr.eu-north-1.amazonaws.com/e-shop-backend:latest \
-            --push .
+            --push ./backend
 
   build-frontend:
     runs-on: ubuntu-latest
@@ -49,7 +49,7 @@ jobs:
             --cache-to=type=local,dest=/tmp/.buildx-cache \
             --tag e-shop-frontend:latest \
             --tag 275539518525.dkr.ecr.eu-north-1.amazonaws.com/e-shop-frontend:latest \
-            --push .
+            --push ./frontend
 
   deploy-backend:
     runs-on: ubuntu-latest
