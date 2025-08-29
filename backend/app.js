@@ -11,7 +11,11 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:3000","https://eshopzone.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "https://eshopzone.vercel.app",
+      "http://eshop-frontend-2061145825.eu-north-1.elb.amazonaws.com",
+    ],
     credentials: true,
   })
 );
