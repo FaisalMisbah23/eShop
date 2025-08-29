@@ -18,13 +18,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-north-1
 
-      - name: Build and push backend Docker image with cache
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 275539518525.dkr.ecr.eu-north-1.amazonaws.com
+
+      - name: Build and push backend Docker image
         run: |
           docker buildx create --use
           docker buildx build \
-            --cache-from=type=local,src=/tmp/.buildx-cache \
-            --cache-to=type=local,dest=/tmp/.buildx-cache \
-            --tag e-shop-backend:latest \
             --tag 275539518525.dkr.ecr.eu-north-1.amazonaws.com/e-shop-backend:latest \
             --push ./backend
 
@@ -41,13 +42,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-north-1
 
-      - name: Build and push frontend Docker image with cache
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 275539518525.dkr.ecr.eu-north-1.amazonaws.com
+
+      - name: Build and push frontend Docker image
         run: |
           docker buildx create --use
           docker buildx build \
-            --cache-from=type=local,src=/tmp/.buildx-cache \
-            --cache-to=type=local,dest=/tmp/.buildx-cache \
-            --tag e-shop-frontend:latest \
             --tag 275539518525.dkr.ecr.eu-north-1.amazonaws.com/e-shop-frontend:latest \
             --push ./frontend
 
