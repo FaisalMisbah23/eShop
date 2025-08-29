@@ -9,7 +9,7 @@ const Hero = () => {
             <div className="absolute inset-0 bg-black bg-opacity-20 z-0 rounded-b-[60px]" />
             <div className="relative z-10 w-[90%] 800px:w-[60%] flex flex-col items-center text-center py-12">
                 <h1 className="text-[40px] leading-[1.1] 800px:text-[64px] font-extrabold text-white drop-shadow-lg mb-4 font-sans">
-                    Welcome to eShopZone
+                    Welcome to eShop
                 </h1>
                 <p className="pt-2 text-[18px] 800px:text-[22px] font-medium text-white/90 mb-8 max-w-2xl">
                     Your ultimate online marketplace for everything you need. Discover amazing products from trusted sellers, enjoy great deals, and shop with confidence.
