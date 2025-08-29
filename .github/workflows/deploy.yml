@@ -2,7 +2,7 @@ name: Deploy E-Shop to AWS
 
 on:
   push:
-    branches: [main]
+    branches: [aws-deployment]
 
 jobs:
   build-backend:
