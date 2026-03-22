@@ -19,6 +19,8 @@ import {
   OrderDetailsPage,
   TrackOrderPage,
   UserInbox,
+  PrivacyPage,
+  TermsPage,
 } from "./routes/Routes.js";
 import {
   ShopHomePage,
@@ -48,7 +50,7 @@ import {
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
 import { loadUser, loadSeller } from "./redux/actions/user";
 import { useDispatch } from "react-redux";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
@@ -60,9 +62,28 @@ import { server } from "./server.js";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import AdminProtectedRoutes from "./routes/ProtectedAdminRoutes.js";
+import ErrorBoundary from "./components/Layout/ErrorBoundary.jsx";
+
+const routeFallback = (
+  <div
+    style={{
+      padding: "3rem",
+      textAlign: "center",
+      color: "#64748b",
+      fontSize: "0.95rem",
+    }}
+  >
+    Loading…
+  </div>
+);
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
+
+  const stripePromise = useMemo(
+    () => (stripeApiKey ? loadStripe(stripeApiKey) : null),
+    [stripeApiKey]
+  );
 
   async function getStripeApiKey() {
     const { data } = await axios.get(`${server}/payment/stripeapikey`);
@@ -86,12 +107,13 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        {stripeApiKey && (
-          <Elements stripe={loadStripe(stripeApiKey)}>
-            {" "}
+        <ErrorBoundary>
+        <Suspense fallback={routeFallback}>
+        {stripePromise && (
+          <Elements stripe={stripePromise}>
             <Routes>
               <Route
-                path="/Payment"
+                path="/payment"
                 element={
                   <ProtectedRoutes>
                     <PaymentPage />
@@ -140,6 +162,8 @@ function App() {
           <Route path="/best-selling" element={<BestSellingPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/faq" element={<FAQPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
           <Route
             path="/checkout"
             element={
@@ -337,6 +361,8 @@ function App() {
           pauseOnHover
           theme="light"
         />
+        </Suspense>
+        </ErrorBoundary>
       </BrowserRouter>
     </>
   );

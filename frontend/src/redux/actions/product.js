@@ -93,7 +93,11 @@ export const deleteProduct = (id) => async (dispatch) => {
 };
 
 // get all products
-export const getAllProducts = () => async (dispatch) => {
+export const getAllProducts = () => async (dispatch, getState) => {
+  const existing = getState().products?.allProducts;
+  if (Array.isArray(existing) && existing.length > 0) {
+    return;
+  }
   try {
     dispatch({
       type: "GetAllProductsRequest",

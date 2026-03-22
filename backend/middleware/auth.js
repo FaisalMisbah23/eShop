@@ -6,11 +6,21 @@ const Shop = require("../model/shop");
 
 exports.isAuthenticated = catchAsyncError(async (req, res, next) => {
   const { token } = req.cookies;
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  if (!decodedToken) {
-    return next(new ErrorHandler("Please login to continue", 400));
+  if (!token) {
+    return next(new ErrorHandler("Please login to continue", 401));
   }
-  req.user = await User.findById(decodedToken.id);
+
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+  if (!decodedToken || !decodedToken.id) {
+    return next(new ErrorHandler("Please login to continue", 401));
+  }
+
+  const user = await User.findById(decodedToken.id);
+  if (!user) {
+    return next(new ErrorHandler("Please login to continue", 401));
+  }
+
+  req.user = user;
   next();
 });
 
@@ -22,17 +32,27 @@ exports.isSeller = catchAsyncError(async (req, res, next) => {
   }
 
   const decoded = jwt.verify(seller_token, process.env.JWT_SECRET_KEY);
+  if (!decoded || !decoded.id) {
+    return next(new ErrorHandler("Please login to continue", 401));
+  }
 
-  req.seller = await Shop.findById(decoded.id);
+  const seller = await Shop.findById(decoded.id);
+  if (!seller) {
+    return next(new ErrorHandler("Please login to continue", 401));
+  }
 
+  req.seller = seller;
   next();
 });
 
 exports.isAdmin = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
+    if (!req.user || !roles.includes(req.user.role)) {
       return next(
-        new ErrorHandler(`${req.user.role} can not access this resources!`)
+        new ErrorHandler(
+          `${req.user?.role || "User"} can not access this resources!`,
+          403
+        )
       );
     }
     next();

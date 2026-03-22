@@ -1,25 +1,15 @@
-const app = require("./app")
-const connectToDb = require('./db/Database')
+const app = require("./app");
+const connectToDb = require("./db/Database");
 
-
-// handling uncaught exception
 process.on("uncaughtException", (err) => {
-    console.log(`Error: ${err.message}`);
-    console.log(`shutting down the server for handling the uncaught exception`);
-})
+  console.error(`uncaughtException: ${err.message}`);
+  process.exit(1);
+});
 
-// config
-if (process.env.NODE_ENV !== "PRODUCTION") {
-    require("dotenv").config({
-        path: "config/.env"
-    })
-}
-
-// create server
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`)
-})
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
 
 // connect db
 connectToDb();

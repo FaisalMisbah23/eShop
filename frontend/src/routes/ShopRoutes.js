@@ -1,17 +1,21 @@
-import ShopHomePage from "../pages/Shop/ShopHomePage";
-import ShopDashboardPage from "../pages/Shop/ShopDashboardPage";
-import ShopCreateProduct from "../pages/Shop/ShopCreateProduct";
-import ShopAllProducts from "../pages/Shop/ShopAllProducts";
-import ShopCreateEvents from "../pages/Shop/ShopCreateEvents";
-import ShopAllEvents from "../pages/Shop/ShopAllEvents";
-import ShopAllCoupons from "../pages/Shop/ShopAllCoupons";
-import ShopPreviewPage from "../pages/Shop/ShopPreviewPage";
-import ShopAllOrders from "../pages/Shop/ShopAllOrders";
-import ShopOrderDetails from "../pages/Shop/ShopOrderDetails";
-import ShopAllRefunds from "../pages/Shop/ShopAllRefunds";
-import ShopSettingsPage from "../pages/Shop/ShopSettingsPage";
-import ShopWithDrawMoneyPage from "../pages/Shop/ShopWithDrawMoneyPage";
-import ShopInboxPage from "../pages/Shop/ShopInboxPage.jsx";
+import { lazy } from "react";
+
+const ShopHomePage = lazy(() => import("../pages/Shop/ShopHomePage"));
+const ShopDashboardPage = lazy(() => import("../pages/Shop/ShopDashboardPage"));
+const ShopCreateProduct = lazy(() => import("../pages/Shop/ShopCreateProduct"));
+const ShopAllProducts = lazy(() => import("../pages/Shop/ShopAllProducts"));
+const ShopCreateEvents = lazy(() => import("../pages/Shop/ShopCreateEvents"));
+const ShopAllEvents = lazy(() => import("../pages/Shop/ShopAllEvents"));
+const ShopAllCoupons = lazy(() => import("../pages/Shop/ShopAllCoupons"));
+const ShopPreviewPage = lazy(() => import("../pages/Shop/ShopPreviewPage"));
+const ShopAllOrders = lazy(() => import("../pages/Shop/ShopAllOrders"));
+const ShopOrderDetails = lazy(() => import("../pages/Shop/ShopOrderDetails"));
+const ShopAllRefunds = lazy(() => import("../pages/Shop/ShopAllRefunds"));
+const ShopSettingsPage = lazy(() => import("../pages/Shop/ShopSettingsPage"));
+const ShopWithDrawMoneyPage = lazy(() =>
+  import("../pages/Shop/ShopWithDrawMoneyPage")
+);
+const ShopInboxPage = lazy(() => import("../pages/Shop/ShopInboxPage.jsx"));
 
 export {
   ShopHomePage,

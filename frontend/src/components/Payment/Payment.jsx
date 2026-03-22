@@ -15,6 +15,13 @@ import axios from "axios";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { RxCross1 } from "react-icons/rx";
 
+const buildCartPayload = (cart) =>
+  (cart || []).map((c) => ({
+    _id: c._id,
+    qty: c.qty,
+    shopId: c.shopId,
+  }));
+
 const Payment = () => {
   const [orderData, setOrderData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -25,8 +32,14 @@ const Payment = () => {
   const elements = useElements();
 
   useEffect(() => {
-    const storedOrder = JSON.parse(localStorage.getItem("latestOrder"));
-    setOrderData(storedOrder);
+    const raw = localStorage.getItem("latestOrder");
+    if (raw) {
+      try {
+        setOrderData(JSON.parse(raw));
+      } catch {
+        setOrderData(null);
+      }
+    }
   }, []);
 
   const createOrder = (data, actions) => {
@@ -34,7 +47,7 @@ const Payment = () => {
       .create({
         purchase_units: [
           {
-            description: "Sunflower",
+            description: "eShop order",
             amount: {
               currency_code: "USD",
               value: orderData?.totalPrice,
@@ -45,74 +58,63 @@ const Payment = () => {
           shipping_preference: "NO_SHIPPING",
         },
       })
-      .then((orderId) => {
-        return orderId;
-      });
+      .then((orderId) => orderId);
   };
 
   const onApprove = async (data, actions) => {
     return actions.order.capture().then(function (details) {
       const { payer } = details;
-      let paymentInfo = payer;
-
-      if (paymentInfo != undefined) {
-        payPalPaymentHandler(paymentInfo);
+      if (payer != undefined) {
+        payPalPaymentHandler(payer);
       }
     });
   };
 
   const payPalPaymentHandler = async (paymentInfo) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    order.paymentInfo = {
-      id: paymentInfo.payer_id,
-      status: "succeeded",
-      type: "Paypal",
-    };
-
-    await axios
-      .post(`${server}/order/create-order`, order, config)
-      .then((res) => {
-        setOpen(false);
-        navigate("/order/success");
-        toast.success("Order successful!");
-        localStorage.setItem("cartItems", JSON.stringify([]));
-        localStorage.setItem("latestOrder", JSON.stringify([]));
-        window.location.reload();
+    if (!orderData?.cart?.length) {
+      toast.error("No order data — return to checkout.");
+      return;
+    }
+    try {
+      const cartPayload = buildCartPayload(orderData?.cart);
+      await axios.post(`${server}/order/create-order`, {
+        cart: cartPayload,
+        shippingAddress: orderData?.shippingAddress,
+        couponName: orderData?.couponName || undefined,
+        paymentInfo: {
+          id: paymentInfo.payer_id,
+          status: "succeeded",
+          type: "Paypal",
+        },
       });
-  };
-
-  const PaymentData = {
-    amount: Math.round(orderData?.totalPrice * 100),
-  };
-
-  const order = {
-    cart: orderData?.cart,
-    shippingAddress: orderData?.shippingAddress,
-    user: user && user,
-    totalPrice: orderData?.totalPrice,
+      setOpen(false);
+      navigate("/order/success");
+      toast.success("Order successful!");
+      localStorage.setItem("cartItems", JSON.stringify([]));
+      localStorage.setItem("latestOrder", JSON.stringify([]));
+      window.location.reload();
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || error.message || "Order failed"
+      );
+    }
   };
 
   const paymentHandler = async (e) => {
     e.preventDefault();
+    if (!orderData?.cart?.length) {
+      toast.error("No order data — return to checkout.");
+      return;
+    }
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-
-      const { data } = await axios.post(
-        `${server}/payment/process`,
-        PaymentData,
-        config
-      );
+      const cartPayload = buildCartPayload(orderData?.cart);
+      const { data } = await axios.post(`${server}/payment/create-payment-intent`, {
+        cart: cartPayload,
+        couponName: orderData?.couponName || undefined,
+      });
 
       const client_secret = data.client_secret;
+      const sessionId = data.sessionId;
 
       if (!stripe || !elements) return;
       const result = await stripe.confirmCardPayment(client_secret, {
@@ -123,54 +125,59 @@ const Payment = () => {
 
       if (result.error) {
         toast.error(result.error.message);
-      } else {
-        if (result.paymentIntent.status === "succeeded") {
-          order.paymentInfo = {
+      } else if (result.paymentIntent?.status === "succeeded") {
+        await axios.post(`${server}/order/create-order`, {
+          cart: cartPayload,
+          shippingAddress: orderData?.shippingAddress,
+          couponName: orderData?.couponName || undefined,
+          paymentInfo: {
             id: result.paymentIntent.id,
             status: result.paymentIntent.status,
             type: "Credit Card",
-          };
-
-          await axios
-            .post(`${server}/order/create-order`, order, config)
-            .then((res) => {
-              setOpen(false);
-              navigate("/order/success");
-              toast.success("Order success!");
-              localStorage.setItem("cartItems", JSON.stringify([]));
-              localStorage.setItem("latestOrder", JSON.stringify([]));
-              window.location.reload();
-            });
-        }
+          },
+          stripeCheckoutSessionId: sessionId,
+        });
+        setOpen(false);
+        navigate("/order/success");
+        toast.success("Order success!");
+        localStorage.setItem("cartItems", JSON.stringify([]));
+        localStorage.setItem("latestOrder", JSON.stringify([]));
+        window.location.reload();
       }
     } catch (error) {
-      toast.error(error);
+      toast.error(
+        error.response?.data?.message || error.message || "Payment failed"
+      );
     }
   };
 
   const cashOnDeliveryHandler = async (e) => {
     e.preventDefault();
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    order.paymentInfo = {
-      type: "Cash on Delivery",
-    };
-
-    await axios
-      .post(`${server}/order/create-order`, order, config)
-      .then((res) => {
-        setOpen(false);
-        navigate("/order/success");
-        toast.success("Order successful!");
-        localStorage.setItem("cartItems", JSON.stringify([]));
-        localStorage.setItem("latestOrder", JSON.stringify([]));
-        window.location.reload();
+    if (!orderData?.cart?.length) {
+      toast.error("No order data — return to checkout.");
+      return;
+    }
+    try {
+      const cartPayload = buildCartPayload(orderData?.cart);
+      await axios.post(`${server}/order/create-order`, {
+        cart: cartPayload,
+        shippingAddress: orderData?.shippingAddress,
+        couponName: orderData?.couponName || undefined,
+        paymentInfo: {
+          type: "Cash on Delivery",
+        },
       });
+      setOpen(false);
+      navigate("/order/success");
+      toast.success("Order successful!");
+      localStorage.setItem("cartItems", JSON.stringify([]));
+      localStorage.setItem("latestOrder", JSON.stringify([]));
+      window.location.reload();
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || error.message || "Order failed"
+      );
+    }
   };
 
   return (
@@ -365,6 +372,7 @@ const PaymentInfo = ({
                   <PayPalScriptProvider
                     options={{
                       "client-id":
+                        process.env.REACT_APP_PAYPAL_CLIENT_ID ||
                         "Aczac4Ry9_QA1t4c7TKH9UusH3RTe6onyICPoCToHG10kjlNdI-qwobbW9JAHzaRQwFMn2-k660853jn",
                     }}
                   >

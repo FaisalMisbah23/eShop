@@ -89,6 +89,9 @@ const Header = ({ activeHeading }) => {
 
   return (
     <>
+      <a href="#main-content" className="skip-to-main">
+        Skip to main content
+      </a>
       {/* Main Header */} 
       <header className={`${active ? "fixed top-0 left-0 w-full z-50 shadow-lg" : ""} bg-white transition-all duration-300`}> 
         <div className="max-w-7xl mx-auto px-4"> 

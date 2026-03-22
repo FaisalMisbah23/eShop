@@ -60,7 +60,7 @@ router.get(
   "/get-all-events-shop/:id",
   catchAsyncError(async (req, res, next) => {
     try {
-      const events = await Event.find({ shopId: req.params.id });
+      const events = await Event.find({ shopId: req.params.id }).lean();
       res.status(201).json({
         events,
         success: true,
@@ -103,7 +103,7 @@ router.delete(
 // get all events
 router.get("/get-all-events", async (req, res, next) => {
   try {
-    const events = await Event.find();
+    const events = await Event.find().lean();
     res.status(201).json({
       success: true,
       events,
@@ -122,7 +122,7 @@ router.get(
     try {
       const events = await Event.find().sort({
         createdAt: -1,
-      });
+      }).lean();
       res.status(201).json({
         success: true,
         events,

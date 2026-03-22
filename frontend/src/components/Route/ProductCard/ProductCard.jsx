@@ -71,7 +71,7 @@ const ProductCard = ({ data, isEvent }) => {
         >
           <img
             src={`${data.images && data.images[0]?.url}`}
-            alt=""
+            alt={data.name ? `${data.name} product image` : "Product"}
             className="w-full h-[170px] object-contain"
           />
         </Link>

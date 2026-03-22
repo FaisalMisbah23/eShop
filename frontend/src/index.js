@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client'; // Note the updated import
+import axios from 'axios';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import Store from './redux/store';
+
+axios.defaults.withCredentials = true;
 
 // Create a root container
 const root = ReactDOM.createRoot(document.getElementById('root'));

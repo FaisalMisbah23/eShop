@@ -1,10 +1,9 @@
 import React from "react"
-import styles from "../../../styles/styles"
 import { Link } from "react-router-dom"
 
 const Hero = () => {
     return (
-        <div className="relative min-h-[70vh] 800px:min-h-[100vh] w-full flex items-center justify-center bg-gradient-to-br from-[#4F8CFF] via-[#A0C1FF] to-[#F5F8FF] pt-16">
+        <div id="main-content" className="relative min-h-[70vh] 800px:min-h-[100vh] w-full flex items-center justify-center bg-gradient-to-br from-[#4F8CFF] via-[#A0C1FF] to-[#F5F8FF] pt-16">
             {/* Overlay for text clarity */}
             <div className="absolute inset-0 bg-black bg-opacity-20 z-0 rounded-b-[60px]" />
             <div className="relative z-10 w-[90%] 800px:w-[60%] flex flex-col items-center text-center py-12">

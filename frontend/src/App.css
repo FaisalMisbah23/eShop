@@ -6,6 +6,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+.skip-to-main {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.5rem 0.75rem;
+  background: #fff;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.skip-to-main:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+  outline: 2px solid #4f8cff;
+  outline-offset: 2px;
+}
+
 *{
   scroll-behavior: smooth;
 }
@@ -15,8 +32,12 @@ body {
     background: #F6F6F5;
     scroll-behavior: smooth;
 }
-input,select{
-  outline: none;
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 2px solid #4f8cff;
+  outline-offset: 2px;
 }
 .batch_heart{
   background: tomato;

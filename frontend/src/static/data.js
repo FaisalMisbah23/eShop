@@ -104,7 +104,7 @@ export const navItems = [
     },
     {
       id: 4,
-      title: "Affortable Prices",
+      title: "Affordable Prices",
       Description: "Get Factory direct price",
       icon: (
         <svg

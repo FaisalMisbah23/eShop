@@ -45,4 +45,8 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
+orderSchema.index({ "user._id": 1, createdAt: -1 });
+orderSchema.index({ "cart.shopId": 1, createdAt: -1 });
+orderSchema.index({ "paymentInfo.id": 1 });
+
 module.exports = mongoose.model("Order", orderSchema);

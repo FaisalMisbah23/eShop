@@ -52,6 +52,7 @@ const Checkout = () => {
         discountPrice,
         shippingAddress,
         user,
+        couponName: couponCodeData ? couponCodeData.name : undefined,
       };
 
       // update local storage with the updated orders array
