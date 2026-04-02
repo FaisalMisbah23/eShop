@@ -1,9 +1,9 @@
-const isProduction = false;
+const isProduction = process.env.NODE_ENV === "production";
 
 export const server = isProduction
-  ? "https://e-shop-backend-gules.vercel.app/api/v2"
-  : "http://eshop-backend-alb-1926786586.eu-north-1.elb.amazonaws.com/api/v2";
+  ? "https://backend-chi-azure-18.vercel.app/api/v2"
+  : "http://localhost:8001/api/v2";
 
 export const socketUrl = isProduction
   ? "https://eshop-qc49.onrender.com"
-  : "https://eshop-qc49.onrender.com";
+  : "http://localhost:6001";
