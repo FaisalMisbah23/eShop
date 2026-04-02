@@ -1,26 +1,22 @@
-import { lazy } from "react";
-
-const LoginPage = lazy(() => import("../pages/LoginPage"));
-const SignupPage = lazy(() => import("../pages/SignupPage"));
-const ActivationPage = lazy(() => import("../pages/ActivationPage"));
-const SellerActivationPage = lazy(() => import("../pages/SellerActivationPage"));
-const HomePage = lazy(() => import("../pages/HomePage"));
-const ProductsPage = lazy(() => import("../pages/ProductsPage"));
-const BestSellingPage = lazy(() => import("../pages/BestSellingPage"));
-const EventsPage = lazy(() => import("../pages/EventsPage"));
-const FAQPage = lazy(() => import("../pages/FAQPage"));
-const ProductDetailsPage = lazy(() => import("../pages/ProductDetailsPage"));
-const ProfilePage = lazy(() => import("../pages/ProfilePage"));
-const ShopCreatePage = lazy(() => import("../pages/ShopCreatePage"));
-const ShopLoginPage = lazy(() => import("../pages/ShopLoginPage"));
-const CheckoutPage = lazy(() => import("../pages/CheckoutPage"));
-const PaymentPage = lazy(() => import("../pages/PaymentPage"));
-const OrderSuccessPage = lazy(() => import("../pages/OrderSuccessPage"));
-const OrderDetailsPage = lazy(() => import("../pages/OrderDetailsPage"));
-const TrackOrderPage = lazy(() => import("../pages/TrackOrderPage"));
-const UserInbox = lazy(() => import("../pages/UserInbox.jsx"));
-const PrivacyPage = lazy(() => import("../pages/PrivacyPage"));
-const TermsPage = lazy(() => import("../pages/TermsPage"));
+import LoginPage from "../pages/LoginPage";
+import SignupPage from "../pages/SignupPage";
+import ActivationPage from "../pages/ActivationPage";
+import SellerActivationPage from "../pages/SellerActivationPage";
+import HomePage from "../pages/HomePage";
+import ProductsPage from "../pages/ProductsPage";
+import BestSellingPage from "../pages/BestSellingPage";
+import EventsPage from "../pages/EventsPage";
+import FAQPage from "../pages/FAQPage";
+import ProductDetailsPage from "../pages/ProductDetailsPage";
+import ProfilePage from "../pages/ProfilePage";
+import ShopCreatePage from "../pages/ShopCreatePage";
+import ShopLoginPage from "../pages/ShopLoginPage";
+import CheckoutPage from "../pages/CheckoutPage";
+import PaymentPage from "../pages/PaymentPage";
+import OrderSuccessPage from "../pages/OrderSuccessPage";
+import OrderDetailsPage from "../pages/OrderDetailsPage";
+import TrackOrderPage from "../pages/TrackOrderPage";
+import UserInbox from "../pages/UserInbox.jsx";
 
 export {
   LoginPage,
@@ -42,6 +38,4 @@ export {
   OrderDetailsPage,
   TrackOrderPage,
   UserInbox,
-  PrivacyPage,
-  TermsPage,
 };

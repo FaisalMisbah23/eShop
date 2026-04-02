@@ -1,22 +1,10 @@
-import { lazy } from "react";
-
-const AdminDashboardPage = lazy(() => import("../pages/AdminDashboardPage"));
-const AdminDashboardUsers = lazy(() => import("../pages/AdminDashboardUsers"));
-const AdminDashboardSellers = lazy(() =>
-  import("../pages/AdminDashboardSellers")
-);
-const AdminDashboardOrders = lazy(() =>
-  import("../pages/AdminDashboardOrders")
-);
-const AdminDashboardProducts = lazy(() =>
-  import("../pages/AdminDashboardProducts.jsx")
-);
-const AdminDashboardEvents = lazy(() =>
-  import("../pages/AdminDashboardEvents")
-);
-const AdminDashboardWithdraw = lazy(() =>
-  import("../pages/AdminDashboardWithdraw.jsx")
-);
+import AdminDashboardPage from "../pages/AdminDashboardPage";
+import AdminDashboardUsers from "../pages/AdminDashboardUsers";
+import AdminDashboardSellers from "../pages/AdminDashboardSellers";
+import AdminDashboardOrders from "../pages/AdminDashboardOrders";
+import AdminDashboardProducts from "../pages/AdminDashboardProducts.jsx";
+import AdminDashboardEvents from "../pages/AdminDashboardEvents";
+import AdminDashboardWithdraw from "../pages/AdminDashboardWithdraw.jsx";
 
 export {
   AdminDashboardPage,
@@ -25,5 +13,5 @@ export {
   AdminDashboardOrders,
   AdminDashboardProducts,
   AdminDashboardEvents,
-  AdminDashboardWithdraw,
+  AdminDashboardWithdraw
 };

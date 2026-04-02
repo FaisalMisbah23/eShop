@@ -61,7 +61,7 @@ router.get(
   "/get-all-products-shop/:id",
   catchAsyncError(async (req, res, next) => {
     try {
-      const products = await Product.find({ shopId: req.params.id }).lean();
+      const products = await Product.find({ shopId: req.params.id });
       res.status(201).json({
         products,
         success: true,
@@ -108,7 +108,7 @@ router.get(
   "/get-all-products",
   catchAsyncError(async (req, res, next) => {
     try {
-      const products = await Product.find().sort({ createdAt: -1 }).lean();
+      const products = await Product.find().sort({ createdAt: -1 });
 
       res.status(201).json({
         success: true,
@@ -186,7 +186,7 @@ router.get(
     try {
       const products = await Product.find().sort({
         createdAt: -1,
-      }).lean();
+      });
       res.status(201).json({
         success: true,
         products,

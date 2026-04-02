@@ -1,94 +1,44 @@
-const path = require("path");
-
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  require("dotenv").config({
-    path: path.join(__dirname, "config/.env"),
-  });
-}
-
 const express = require("express");
-const helmet = require("helmet");
-const pino = require("pino");
-const pinoHttp = require("pino-http");
 const ErrorHandler = require("./middleware/error");
-const stripeWebhook = require("./controllers/stripeWebhook");
-
 const app = express();
-app.set("trust proxy", 1);
-
-app.post(
-  "/api/v2/payment/webhook",
-  express.raw({ type: "application/json" }),
-  stripeWebhook
-);
-
-const compression = require("compression");
-app.use(compression());
-
-app.use(helmet());
-
-const logger = pino({
-  level: process.env.LOG_LEVEL || "info",
-  redact: ["req.headers.cookie", "req.headers.authorization"],
-});
-app.use(
-  pinoHttp({
-    logger,
-    autoLogging: { ignore: (req) => req.url === "/health" },
-  })
-);
-
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const bodyParser = require("body-parser");
+const path = require("path");
+const cloudinary = require("cloudinary").v2;
 
-const frontendOrigins = (process.env.FRONTEND_URL || "")
-  .split(",")
-  .map((s) => s.trim())
-  .filter(Boolean);
-
-const defaultOrigins = [
-  "http://localhost:3000",
-  "https://eshopzone.vercel.app",
-];
-const corsOrigins =
-  frontendOrigins.length > 0 ? frontendOrigins : defaultOrigins;
-
-app.use(express.json({ limit: "15mb" }));
+app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: corsOrigins,
+    origin: [
+      "http://localhost:3000",
+      "https://eshopzone.vercel.app",
+      "http://eshop-frontend-2061145825.eu-north-1.elb.amazonaws.com",
+    ],
     credentials: true,
   })
 );
-app.use(
-  require("body-parser").urlencoded({ extended: true, limit: "2mb" })
-);
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/test", (req, res) => {
+  res.send("Hello World!");
+});
 
-const cloudinary = require("cloudinary").v2;
+// config
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  require("dotenv").config({
+    path: "config/.env",
+  });
+}
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const mongoose = require("mongoose");
-app.get("/health", (req, res) => {
-  res.status(200).json({ ok: true, uptime: process.uptime() });
-});
-
-app.get("/ready", async (req, res) => {
-  if (mongoose.connection.readyState === 1) {
-    return res.status(200).json({ ok: true, db: true });
-  }
-  res.status(503).json({ ok: false, db: false });
-});
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use("/test", (req, res) => {
-  res.send("Hello World!");
-});
-
+// import routes
 const user = require("./controllers/user");
 const shop = require("./controllers/shop.js");
 const product = require("./controllers/product");
@@ -111,6 +61,7 @@ app.use("/api/v2/conversation", conversation);
 app.use("/api/v2/message", message);
 app.use("/api/v2/withdraw", withdraw);
 
+// It's for Error Handling
 app.use(ErrorHandler);
 
 module.exports = app;

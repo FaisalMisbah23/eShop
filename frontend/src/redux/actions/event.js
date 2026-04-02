@@ -68,11 +68,7 @@ export const deleteEvent = (id) => async (dispatch) => {
 };
 
 // get all events
-export const getAllEvents = () => async (dispatch, getState) => {
-  const existing = getState().event?.allEvents;
-  if (Array.isArray(existing) && existing.length > 0) {
-    return;
-  }
+export const getAllEvents = () => async (dispatch) => {
   try {
     dispatch({
       type: "GetAllEventsRequest",

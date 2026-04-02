@@ -114,15 +114,7 @@ const Footer = () => {
       </div>
       <div className="max-w-7xl mx-auto px-4 mt-10 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-[#A0C1FF] pt-6">
         <span className="text-sm">© 2025 eShopZone. All rights reserved.</span>
-        <span className="text-sm flex gap-3">
-          <Link to="/terms" className="hover:text-[#4F8CFF]">
-            Terms
-          </Link>
-          <span aria-hidden="true">·</span>
-          <Link to="/privacy" className="hover:text-[#4F8CFF]">
-            Privacy
-          </Link>
-        </span>
+        <span className="text-sm">Terms · Privacy Policy</span>
         <img
           src="https://hamart-shop.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffooter-payment.a37c49ac.png&w=640&q=75"
           alt="payment methods"

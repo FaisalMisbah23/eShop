@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
-import { server, socketUrl } from "../../server";
+import { backend_url, server } from "../../server";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineArrowRight, AiOutlineSend } from "react-icons/ai";
@@ -9,7 +9,8 @@ import styles from "../../styles/styles";
 import { TfiGallery } from "react-icons/tfi";
 import socketIO from "socket.io-client";
 import { format } from "timeago.js";
-const socketId = socketIO(socketUrl, { transports: ["websocket"] });
+const ENDPOINT = "https://eshop-qc49.onrender.com";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 const DashboardMessages = () => {
   const { seller } = useSelector((state) => state.seller);

@@ -7,17 +7,9 @@ const sendMail = require("../utils/sendMail");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
-const {
-  authLimiter,
-  strictAuthLimiter,
-} = require("../middleware/rateLimits");
 const cloudinary = require("cloudinary").v2;
 
-const frontendBase =
-  (process.env.FRONTEND_URL || "").split(",")[0].trim() ||
-  "https://eshopzone.vercel.app";
-
-router.post("/create-user", authLimiter, async (req, res, next) => {
+router.post("/create-user", async (req, res, next) => {
   try {
     const { name, email, password, avatar } = req.body;
     const userEmail = await User.findOne({ email });
@@ -42,7 +34,7 @@ router.post("/create-user", authLimiter, async (req, res, next) => {
 
     const activationToken = createActivationToken(user);
 
-    const activationUrl = `${frontendBase}/activation/${activationToken}`;
+    const activationUrl = `https://eshopzone.vercel.app/activation/${activationToken}`;
 
     try {
       await sendMail({
@@ -72,7 +64,6 @@ const createActivationToken = (user) => {
 // activate user
 router.post(
   "/activation",
-  authLimiter,
   catchAsyncError(async (req, res, next) => {
     try {
       const { activation_token } = req.body;
@@ -110,7 +101,6 @@ router.post(
 //login user
 router.post(
   "/login-user",
-  strictAuthLimiter,
   catchAsyncError(async (req, res, next) => {
     const { email, password } = req.body;
     try {

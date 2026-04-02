@@ -1,7 +1,7 @@
 FROM node:18
-WORKDIR /app
+WORKDIR /socket
 COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 8000
-CMD ["npm", "start"]
+EXPOSE 6000
+CMD ["node", "index.js"]

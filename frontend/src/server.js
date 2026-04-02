@@ -1,11 +1,5 @@
-const apiOrigin = (
-  process.env.REACT_APP_API_URL || "http://localhost:8000"
-).replace(/\/$/, "");
+const isProduction = false;
 
-/** REST API base (includes /api/v2 prefix) */
-export const server = `${apiOrigin}/api/v2`;
-
-/** Socket.IO server origin (no path suffix) */
-export const socketUrl = (
-  process.env.REACT_APP_SOCKET_URL || "http://localhost:5000"
-).replace(/\/$/, "");
+export const server = isProduction
+  ? "https://e-shop-backend-gules.vercel.app/api/v2"
+  : "http://eshop-backend-alb-1926786586.eu-north-1.elb.amazonaws.com/api/v2";
