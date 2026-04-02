@@ -6,6 +6,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 const cloudinary = require("cloudinary").v2;
+const connectToDb = require("./db/Database");
 
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
@@ -31,6 +32,8 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
     path: "config/.env",
   });
 }
+
+connectToDb();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
