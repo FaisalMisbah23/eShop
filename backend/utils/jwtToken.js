@@ -1,7 +1,7 @@
 // create token and saving that in cookies
 const sendToken = (user, statusCode, res) => {
   const token = user.getJwtToken();
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'PRODUCTION';
 
   // Options for cookies
   const options = {

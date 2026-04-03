@@ -14,6 +14,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
+      "https://frontend-bay-eight-25.vercel.app",
       "https://eshopzone.vercel.app",
       "http://eshop-frontend-2061145825.eu-north-1.elb.amazonaws.com",
     ],
