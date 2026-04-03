@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const getJwtExpiry = () => {
+  const raw = (process.env.JWT_EXPIRES || "").trim();
+  return raw || "7d";
+};
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -80,7 +85,7 @@ userSchema.pre("save", async function (next) {
 // jwt token
 userSchema.methods.getJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: process.env.JWT_EXPIRES,
+    expiresIn: getJwtExpiry(),
   });
 };
 
