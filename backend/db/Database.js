@@ -17,9 +17,12 @@ const connectToDb = async () => {
         return connectionPromise;
     }
 
-    const connectionUrl = process.env.DB_URL.includes("?appName=")
-        ? process.env.DB_URL
-        : `${process.env.DB_URL}/eshop?retryWrites=true&w=majority&appName=Cluster0`;
+    let connectionUrl = process.env.DB_URL;
+    if (!connectionUrl.includes("appName=")) {
+        connectionUrl += connectionUrl.includes("?")
+            ? "&appName=Cluster0"
+            : "?appName=Cluster0";
+    }
 
     connectionPromise = mongoose
         .connect(connectionUrl, {
