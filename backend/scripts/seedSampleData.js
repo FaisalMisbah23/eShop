@@ -36,6 +36,13 @@ function buildDbUrl(rawUrl) {
   return url;
 }
 
+function imageUrlFromQuery(query, size = "800x800") {
+  if (!query) {
+    return `https://picsum.photos/seed/eshop-fallback/${size}`;
+  }
+  return `https://source.unsplash.com/${size}/?${encodeURIComponent(query)}`;
+}
+
 function productDoc(shop, item, index) {
   return {
     name: item.name,
@@ -48,7 +55,7 @@ function productDoc(shop, item, index) {
     images: [
       {
         public_id: `seed/products/${index + 1}`,
-        url: `https://picsum.photos/seed/eshop-product-${index + 1}/800/800`,
+        url: imageUrlFromQuery(item.imageQuery, "800x800"),
       },
     ],
     shopId: String(shop._id),
@@ -81,7 +88,7 @@ function eventDoc(shop, item, index) {
     images: [
       {
         public_id: `seed/events/${index + 1}`,
-        url: `https://picsum.photos/seed/eshop-event-${index + 1}/900/900`,
+        url: imageUrlFromQuery(item.imageQuery, "900x900"),
       },
     ],
     shopId: String(shop._id),
@@ -139,37 +146,37 @@ async function run() {
   }
 
   const products = [
-    { name: "Demo Running Shoes", description: "Lightweight shoes for daily runs.", category: "Shoes", tags: "sport,running", originalPrice: 120, discountPrice: 89, stock: 40 },
-    { name: "Demo Leather Boots", description: "Durable leather boots for all seasons.", category: "Shoes", tags: "boots,men", originalPrice: 180, discountPrice: 139, stock: 25 },
-    { name: "Demo Cotton T-Shirt", description: "Soft breathable cotton tee.", category: "Clothes", tags: "tshirt,casual", originalPrice: 35, discountPrice: 22, stock: 120 },
-    { name: "Demo Denim Jacket", description: "Classic fit denim jacket.", category: "Clothes", tags: "jacket,denim", originalPrice: 95, discountPrice: 69, stock: 45 },
-    { name: "Demo Wireless Earbuds", description: "Compact earbuds with rich sound.", category: "Electronics", tags: "audio,bluetooth", originalPrice: 99, discountPrice: 74, stock: 80 },
-    { name: "Demo Bluetooth Speaker", description: "Portable speaker with deep bass.", category: "Electronics", tags: "speaker,music", originalPrice: 85, discountPrice: 59, stock: 60 },
-    { name: "Demo Smart Watch", description: "Health and fitness smart tracker.", category: "Electronics", tags: "watch,fitness", originalPrice: 199, discountPrice: 149, stock: 35 },
-    { name: "Demo 4K Smart TV", description: "43 inch UHD smart television.", category: "Electronics", tags: "tv,home", originalPrice: 499, discountPrice: 429, stock: 18 },
-    { name: "Demo Gaming Mouse", description: "High precision RGB gaming mouse.", category: "Computers and Laptops", tags: "gaming,pc", originalPrice: 55, discountPrice: 39, stock: 90 },
-    { name: "Demo Mechanical Keyboard", description: "Tactile keyboard for gaming and typing.", category: "Computers and Laptops", tags: "keyboard,pc", originalPrice: 120, discountPrice: 89, stock: 50 },
-    { name: "Demo Laptop Backpack", description: "Water-resistant backpack with laptop sleeve.", category: "Accessories", tags: "bag,travel", originalPrice: 65, discountPrice: 45, stock: 75 },
-    { name: "Demo Cookware Set", description: "Stainless steel 10-piece cookware set.", category: "Home & Kitchen", tags: "kitchen,cook", originalPrice: 210, discountPrice: 169, stock: 20 },
-    { name: "Demo Air Fryer 5L", description: "Low-oil cooking air fryer.", category: "Home & Kitchen", tags: "appliance,kitchen", originalPrice: 160, discountPrice: 129, stock: 32 },
-    { name: "Demo Vacuum Cleaner", description: "Powerful vacuum cleaner for home.", category: "Home & Kitchen", tags: "home,cleaning", originalPrice: 240, discountPrice: 199, stock: 15 },
-    { name: "Demo Face Serum", description: "Vitamin C brightening face serum.", category: "Beauty & Health", tags: "beauty,skincare", originalPrice: 45, discountPrice: 32, stock: 85 },
-    { name: "Demo Hair Dryer", description: "Salon-grade hair dryer.", category: "Beauty & Health", tags: "beauty,hair", originalPrice: 75, discountPrice: 54, stock: 40 },
-    { name: "Demo Yoga Mat", description: "Non-slip yoga and workout mat.", category: "Sports", tags: "yoga,fitness", originalPrice: 40, discountPrice: 27, stock: 110 },
-    { name: "Demo Dumbbell Set", description: "Adjustable dumbbell set for strength training.", category: "Sports", tags: "gym,weights", originalPrice: 130, discountPrice: 99, stock: 28 },
-    { name: "Demo Organic Honey", description: "Raw organic honey 500g.", category: "Groceries", tags: "food,organic", originalPrice: 18, discountPrice: 12, stock: 130 },
-    { name: "Demo Basmati Rice 5kg", description: "Premium long grain basmati rice.", category: "Groceries", tags: "rice,food", originalPrice: 28, discountPrice: 21, stock: 90 },
-    { name: "Demo Story Book Set", description: "Colorful story books for children.", category: "Books", tags: "kids,reading", originalPrice: 42, discountPrice: 29, stock: 65 },
-    { name: "Demo STEM Building Blocks", description: "Educational building blocks for kids.", category: "Toys", tags: "kids,learning", originalPrice: 58, discountPrice: 41, stock: 55 },
+    { name: "Nike Air Zoom Pegasus 40", description: "Responsive daily running shoe with breathable mesh upper.", category: "Shoes", tags: "nike,running,men", originalPrice: 140, discountPrice: 119, stock: 36, imageQuery: "nike running shoes product" },
+    { name: "Timberland Premium 6-Inch Boots", description: "Waterproof leather boots built for all-weather use.", category: "Shoes", tags: "timberland,boots,leather", originalPrice: 220, discountPrice: 189, stock: 22, imageQuery: "leather boots product photo" },
+    { name: "Levi's 501 Original Fit Jeans", description: "Classic straight-fit denim with timeless style.", category: "Clothes", tags: "levis,jeans,denim", originalPrice: 79, discountPrice: 59, stock: 70, imageQuery: "blue denim jeans product" },
+    { name: "Uniqlo Supima Cotton Crew Neck Tee", description: "Soft premium cotton t-shirt for everyday wear.", category: "Clothes", tags: "uniqlo,tshirt,casual", originalPrice: 29, discountPrice: 19, stock: 120, imageQuery: "white cotton t shirt product" },
+    { name: "Sony WH-1000XM5 Wireless Headphones", description: "Top-tier noise-canceling headphones with clear sound.", category: "Electronics", tags: "sony,headphones,wireless", originalPrice: 399, discountPrice: 329, stock: 24, imageQuery: "wireless headphones product" },
+    { name: "JBL Flip 6 Portable Bluetooth Speaker", description: "Compact waterproof speaker with powerful bass.", category: "Electronics", tags: "jbl,speaker,bluetooth", originalPrice: 149, discountPrice: 119, stock: 48, imageQuery: "portable bluetooth speaker product" },
+    { name: "Apple Watch SE 2nd Gen", description: "Smart fitness tracking and notifications on your wrist.", category: "Electronics", tags: "apple,smartwatch,fitness", originalPrice: 279, discountPrice: 239, stock: 30, imageQuery: "smart watch product photo" },
+    { name: "Samsung 43 Inch Crystal UHD 4K TV", description: "Sharp 4K display with vibrant color and HDR support.", category: "Electronics", tags: "samsung,tv,4k", originalPrice: 549, discountPrice: 469, stock: 16, imageQuery: "4k tv product" },
+    { name: "Logitech G502 HERO Gaming Mouse", description: "High-precision gaming mouse with customizable weights.", category: "Computers and Laptops", tags: "logitech,mouse,gaming", originalPrice: 79, discountPrice: 59, stock: 84, imageQuery: "gaming mouse product" },
+    { name: "Keychron K2 Mechanical Keyboard", description: "Compact wireless mechanical keyboard with tactile switches.", category: "Computers and Laptops", tags: "keychron,keyboard,mechanical", originalPrice: 109, discountPrice: 89, stock: 52, imageQuery: "mechanical keyboard product" },
+    { name: "Samsonite GuardIT 2.0 Laptop Backpack", description: "Durable travel backpack with padded laptop compartment.", category: "Accessories", tags: "samsonite,backpack,laptop", originalPrice: 89, discountPrice: 69, stock: 60, imageQuery: "laptop backpack product" },
+    { name: "T-fal Stainless Steel Cookware Set 10-Piece", description: "Versatile cookware set suitable for daily cooking.", category: "Home & Kitchen", tags: "cookware,kitchen,stainless", originalPrice: 229, discountPrice: 179, stock: 20, imageQuery: "stainless cookware set product" },
+    { name: "Philips Essential Airfryer XL", description: "Healthy frying with rapid air technology.", category: "Home & Kitchen", tags: "philips,airfryer,kitchen", originalPrice: 189, discountPrice: 149, stock: 34, imageQuery: "air fryer product" },
+    { name: "Dyson V8 Cordless Vacuum Cleaner", description: "Powerful cordless vacuum for deep home cleaning.", category: "Home & Kitchen", tags: "dyson,vacuum,home", originalPrice: 449, discountPrice: 379, stock: 14, imageQuery: "cordless vacuum cleaner product" },
+    { name: "The Ordinary Vitamin C Suspension 23%", description: "Brightening skincare treatment for uneven tone.", category: "Beauty & Health", tags: "skincare,vitamin c,serum", originalPrice: 24, discountPrice: 18, stock: 90, imageQuery: "vitamin c serum product" },
+    { name: "Remington Proluxe Hair Dryer", description: "Fast-dry hair dryer with ionic conditioning.", category: "Beauty & Health", tags: "hair dryer,beauty,remington", originalPrice: 89, discountPrice: 64, stock: 42, imageQuery: "hair dryer product" },
+    { name: "Liforme Yoga Mat", description: "Premium non-slip yoga mat for studio and home workouts.", category: "Sports", tags: "yoga,mat,fitness", originalPrice: 120, discountPrice: 95, stock: 48, imageQuery: "yoga mat product" },
+    { name: "Bowflex SelectTech 552 Dumbbells", description: "Adjustable dumbbells for full-body strength training.", category: "Sports", tags: "dumbbell,weights,gym", originalPrice: 399, discountPrice: 329, stock: 20, imageQuery: "adjustable dumbbell set product" },
+    { name: "Nature Nate's Organic Raw Honey 16oz", description: "Pure raw honey sourced from trusted beekeepers.", category: "Groceries", tags: "organic,honey,food", originalPrice: 16, discountPrice: 12, stock: 130, imageQuery: "honey jar product" },
+    { name: "Daawat Extra Long Basmati Rice 5kg", description: "Aromatic premium basmati rice for everyday meals.", category: "Groceries", tags: "rice,basmati,grocery", originalPrice: 32, discountPrice: 24, stock: 88, imageQuery: "basmati rice bag product" },
+    { name: "Usborne First Reading Collection", description: "Illustrated beginner-friendly books for young readers.", category: "Books", tags: "books,kids,reading", originalPrice: 49, discountPrice: 35, stock: 54, imageQuery: "children books set product" },
+    { name: "LEGO Classic Creative Bricks Box", description: "Open-ended building set to spark creativity.", category: "Toys", tags: "lego,toys,education", originalPrice: 59, discountPrice: 44, stock: 62, imageQuery: "lego building blocks product" },
   ];
 
   const events = [
-    { name: "Demo Flash Deal Sneakers", description: "Limited-time sneakers event.", category: "Shoes", tags: "flash,deal", originalPrice: 130, discountPrice: 79, stock: 30 },
-    { name: "Demo Winter Hoodie Event", description: "Seasonal hoodie discounts.", category: "Clothes", tags: "winter,sale", originalPrice: 90, discountPrice: 49, stock: 45 },
-    { name: "Demo Gadget Bonanza", description: "Discount event on selected gadgets.", category: "Electronics", tags: "gadget,offer", originalPrice: 220, discountPrice: 159, stock: 25 },
-    { name: "Demo Kitchen Essentials Event", description: "Home and kitchen promotion.", category: "Home & Kitchen", tags: "kitchen,event", originalPrice: 180, discountPrice: 129, stock: 20 },
-    { name: "Demo Fitness Week", description: "Sports and fitness event pricing.", category: "Sports", tags: "fitness,week", originalPrice: 99, discountPrice: 69, stock: 35 },
-    { name: "Demo Beauty Picks Event", description: "Top beauty products special prices.", category: "Beauty & Health", tags: "beauty,event", originalPrice: 70, discountPrice: 45, stock: 50 },
+    { name: "Nike Weekend Sprint Sale", description: "Limited-time markdowns on premium running footwear.", category: "Shoes", tags: "flash,shoes,sale", originalPrice: 160, discountPrice: 119, stock: 30, imageQuery: "running shoes sale banner" },
+    { name: "Denim & Streetwear Festival", description: "Curated picks on jeans, tees, and jackets.", category: "Clothes", tags: "fashion,streetwear,event", originalPrice: 110, discountPrice: 69, stock: 45, imageQuery: "streetwear clothing collection" },
+    { name: "Smart Tech Mega Offer", description: "Top gadgets and accessories at special prices.", category: "Electronics", tags: "electronics,gadget,offer", originalPrice: 299, discountPrice: 219, stock: 28, imageQuery: "electronics gadgets product lineup" },
+    { name: "Kitchen Upgrade Week", description: "Home cooking essentials and appliances promotion.", category: "Home & Kitchen", tags: "kitchen,home,week", originalPrice: 220, discountPrice: 159, stock: 24, imageQuery: "kitchen appliances product" },
+    { name: "Fitness Essentials Drop", description: "Best-value gym and training essentials this week.", category: "Sports", tags: "fitness,sports,training", originalPrice: 129, discountPrice: 89, stock: 35, imageQuery: "fitness equipment product" },
+    { name: "Skincare Glow Event", description: "Popular beauty essentials with limited-time savings.", category: "Beauty & Health", tags: "beauty,skincare,event", originalPrice: 85, discountPrice: 59, stock: 50, imageQuery: "skincare products flatlay" },
   ];
 
   const coupons = [
@@ -178,6 +185,9 @@ async function run() {
     { name: "FREESHIP", value: 5, minAmount: 20, maxAmount: 60, selectedProduct: "" },
     { name: "MEGA30", value: 30, minAmount: 200, maxAmount: 500, selectedProduct: "" },
   ].map((c) => ({ ...c, shopId: String(shop._id) }));
+
+  await Product.deleteMany({ shopId: String(shop._id), name: /^Demo\s/ });
+  await Event.deleteMany({ shopId: String(shop._id), name: /^Demo\s/ });
 
   const productDocs = products.map((p, i) => productDoc(shop, p, i));
   const eventDocs = events.map((e, i) => eventDoc(shop, e, i));
