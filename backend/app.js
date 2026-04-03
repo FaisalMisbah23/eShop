@@ -55,6 +55,15 @@ const conversation = require("./controllers/conversation");
 const message = require("./controllers/message");
 const withdraw = require("./controllers/withdraw");
 
+app.use(async (req, res, next) => {
+  try {
+    await connectToDb();
+    next();
+  } catch (err) {
+    return next(new ErrorHandler(`Database unavailable: ${err.message}`, 503));
+  }
+});
+
 app.use("/api/v2/user", user);
 app.use("/api/v2/shop", shop);
 app.use("/api/v2/product", product);

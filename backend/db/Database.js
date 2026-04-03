@@ -1,33 +1,44 @@
 const mongoose = require("mongoose");
 
+let connectionPromise = null;
+
 const connectToDb = async () => {
     if (!process.env.DB_URL) {
-        console.error("MongoDB connection skipped: DB_URL is not set");
-        return false;
+        throw new Error("DB_URL is not set");
     }
 
     // Reuse existing connection in serverless warm invocations.
     if (mongoose.connection.readyState === 1) {
-        console.log("Using existing MongoDB connection");
-        return true;
+        return mongoose.connection;
     }
 
-    try {
-        // Ensure appName parameter is included for MongoDB Atlas
-        const connectionUrl = process.env.DB_URL.includes("?appName=")
-            ? process.env.DB_URL
-            : `${process.env.DB_URL}/?appName=Cluster0`;
+    // Share one in-flight connection attempt across concurrent requests.
+    if (connectionPromise) {
+        return connectionPromise;
+    }
 
-        const data = await mongoose.connect(connectionUrl, {
+    const connectionUrl = process.env.DB_URL.includes("?appName=")
+        ? process.env.DB_URL
+        : `${process.env.DB_URL}/eshop?retryWrites=true&w=majority&appName=Cluster0`;
+
+    connectionPromise = mongoose
+        .connect(connectionUrl, {
             serverSelectionTimeoutMS: 15000,
             connectTimeoutMS: 15000,
+        })
+        .then((data) => {
+            console.log(`mongodb connected with server: ${data.connection.host}`);
+            return data.connection;
+        })
+        .catch((error) => {
+            console.error(`MongoDB connection failed: ${error.message}`);
+            throw error;
+        })
+        .finally(() => {
+            connectionPromise = null;
         });
-        console.log(`mongodb connected with server: ${data.connection.host}`);
-        return true;
-    } catch (error) {
-        console.error(`MongoDB connection failed: ${error.message}`);
-        return false;
-    }
+
+    return connectionPromise;
 };
 
 module.exports = connectToDb;
