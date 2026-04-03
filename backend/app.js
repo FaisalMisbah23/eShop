@@ -34,7 +34,8 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   });
 }
 
-connectToDb();
+// Initialize database connection
+connectToDb().catch(err => console.error("Failed to connect to database:", err));
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
