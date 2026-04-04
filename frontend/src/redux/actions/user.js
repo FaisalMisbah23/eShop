@@ -35,11 +35,17 @@ export const loadSeller = () => async (dispatch) => {
       type: "LoadSellerSuccess",
       payload: data.seller,
     });
+
+    return data.seller;
   } catch (error) {
+    const message = error?.response?.data?.message || "Error loading seller";
+
     dispatch({
       type: "LoadSellerFail",
-      payload: error.response.data.message || "Error loading seller",
+      payload: message,
     });
+
+    throw new Error(message);
   }
 };
 

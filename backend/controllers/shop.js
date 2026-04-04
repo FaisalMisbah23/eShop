@@ -165,9 +165,8 @@ router.get(
   "/logout",
   isSeller,
   catchAsyncError(async (req, res, next) => {
-    const isProduction =
-      process.env.NODE_ENV === "production" ||
-      process.env.NODE_ENV === "PRODUCTION";
+    const nodeEnv = (process.env.NODE_ENV || "").toLowerCase();
+    const isProduction = nodeEnv === "production" || nodeEnv === "prod";
 
     res.cookie("seller_token", null, {
       expires: new Date(Date.now()),

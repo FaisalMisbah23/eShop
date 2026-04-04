@@ -17,16 +17,31 @@ const ShopLogin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await axios.post(`${server}/shop/login-shop`, {
-            email,
-            password
-        }, { withCredentials: true }).then(async () => {
-            await dispatch(loadSeller());
+        try {
+            const { data } = await axios.post(`${server}/shop/login-shop`, {
+                email,
+                password
+            }, { withCredentials: true });
+
+            const sellerData = data?.seller || data?.user;
+            if (!sellerData) {
+                throw new Error("Seller data missing in login response");
+            }
+
+            // Set seller auth state immediately from login response.
+            dispatch({
+                type: "LoadSellerSuccess",
+                payload: sellerData,
+            });
+
             toast.success("Login Successful!");
-            navigate("/dashboard");
-        }).catch((e) => {
-            toast.error(e.response.data.message);
-        })
+            navigate("/dashboard", { replace: true });
+
+            // Refresh seller details in the background once cookie is available.
+            dispatch(loadSeller());
+        } catch (e) {
+            toast.error(e?.response?.data?.message || "Unable to login seller");
+        }
     }
 
     return (
