@@ -2,14 +2,16 @@
 const sendShopToken = (user, statusCode, res) => {
   const token = user.getJwtToken();
 
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isProduction =
+    process.env.NODE_ENV === "production" ||
+    process.env.NODE_ENV === "PRODUCTION";
 
   // Options for cookies
   const options = {
     expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: isProduction ? "none" : "lax",
   };
 
   res.status(statusCode).cookie("seller_token", token, options).json({

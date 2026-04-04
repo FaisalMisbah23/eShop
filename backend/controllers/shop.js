@@ -165,11 +165,15 @@ router.get(
   "/logout",
   isSeller,
   catchAsyncError(async (req, res, next) => {
+    const isProduction =
+      process.env.NODE_ENV === "production" ||
+      process.env.NODE_ENV === "PRODUCTION";
+
     res.cookie("seller_token", null, {
       expires: new Date(Date.now()),
       httpOnly: true,
-      sameSite: "none",
-      secure: true,
+      sameSite: isProduction ? "none" : "lax",
+      secure: isProduction,
     });
 
     res.status(201).json({
