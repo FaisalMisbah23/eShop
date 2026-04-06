@@ -21,6 +21,20 @@ const buildCartPayload = (cart) =>
     shopId: c.shopId,
   }));
 
+/** Backend Order model requires `user` and `totalPrice` (see backend/model/order.js). */
+function buildCreateOrderBody(orderData, cartPayload, paymentInfo, reduxUser, extra = {}) {
+  const orderUser = orderData?.user ?? reduxUser;
+  const totalPrice = Number(orderData?.totalPrice);
+  return {
+    cart: cartPayload,
+    shippingAddress: orderData?.shippingAddress,
+    user: orderUser,
+    totalPrice: Number.isFinite(totalPrice) ? totalPrice : 0,
+    paymentInfo,
+    ...extra,
+  };
+}
+
 const stripeElementClass =
   "w-full rounded-md border border-gray-300 bg-white px-3 py-3 text-gray-900";
 
@@ -87,16 +101,20 @@ const Payment = () => {
     }
     try {
       const cartPayload = buildCartPayload(orderData?.cart);
-      await axios.post(`${server}/order/create-order`, {
-        cart: cartPayload,
-        shippingAddress: orderData?.shippingAddress,
-        couponName: orderData?.couponName || undefined,
-        paymentInfo: {
-          id: paymentInfo.payer_id,
-          status: "succeeded",
-          type: "Paypal",
-        },
-      });
+      await axios.post(
+        `${server}/order/create-order`,
+        buildCreateOrderBody(
+          orderData,
+          cartPayload,
+          {
+            id: paymentInfo.payer_id,
+            status: "succeeded",
+            type: "Paypal",
+          },
+          user,
+          { couponName: orderData?.couponName || undefined }
+        )
+      );
       setOpen(false);
       navigate("/order/success");
       toast.success("Order successful!");
@@ -136,17 +154,23 @@ const Payment = () => {
       if (result.error) {
         toast.error(result.error.message);
       } else if (result.paymentIntent?.status === "succeeded") {
-        await axios.post(`${server}/order/create-order`, {
-          cart: cartPayload,
-          shippingAddress: orderData?.shippingAddress,
-          couponName: orderData?.couponName || undefined,
-          paymentInfo: {
-            id: result.paymentIntent.id,
-            status: result.paymentIntent.status,
-            type: "Credit Card",
-          },
-          stripeCheckoutSessionId: sessionId,
-        });
+        await axios.post(
+          `${server}/order/create-order`,
+          buildCreateOrderBody(
+            orderData,
+            cartPayload,
+            {
+              id: result.paymentIntent.id,
+              status: result.paymentIntent.status,
+              type: "Credit Card",
+            },
+            user,
+            {
+              couponName: orderData?.couponName || undefined,
+              stripeCheckoutSessionId: sessionId,
+            }
+          )
+        );
         setOpen(false);
         navigate("/order/success");
         toast.success("Order success!");
@@ -169,14 +193,16 @@ const Payment = () => {
     }
     try {
       const cartPayload = buildCartPayload(orderData?.cart);
-      await axios.post(`${server}/order/create-order`, {
-        cart: cartPayload,
-        shippingAddress: orderData?.shippingAddress,
-        couponName: orderData?.couponName || undefined,
-        paymentInfo: {
-          type: "Cash on Delivery",
-        },
-      });
+      await axios.post(
+        `${server}/order/create-order`,
+        buildCreateOrderBody(
+          orderData,
+          cartPayload,
+          { type: "Cash on Delivery" },
+          user,
+          { couponName: orderData?.couponName || undefined }
+        )
+      );
       setOpen(false);
       navigate("/order/success");
       toast.success("Order successful!");
