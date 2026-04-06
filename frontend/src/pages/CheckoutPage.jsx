@@ -6,40 +6,30 @@ import Footer from "../components/Layout/Footer";
 
 const CheckoutPage = () => {
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      
-      {/* Hero Section with Modern Theme */}
-      <div className="relative bg-gradient-to-r from-[#4F8CFF] via-[#A0C1FF] to-[#F5F8FF] pt-20 pb-8">
-        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-        <div className="relative max-w-7xl mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Checkout
-            </h1>
-            <p className="text-lg text-white/90">
-              Complete your order with secure payment
-            </p>
-          </div>
+      <header className="border-b border-gray-200 bg-white pt-20 pb-6 sm:pt-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <h1 className="text-2xl font-semibold text-gray-900 sm:text-3xl">
+            Checkout
+          </h1>
+          <p className="mt-2 text-gray-600">
+            Step 1 of 2: enter where we should deliver your order. Fields marked
+            with an asterisk are required.
+          </p>
         </div>
-      </div>
+      </header>
 
-      {/* Checkout Steps */}
-      <div className="bg-white py-8">
-        <div className="max-w-7xl mx-auto px-4">
-          <CheckoutSteps active={1} />
-        </div>
-      </div>
+      <CheckoutSteps active={1} />
 
-      {/* Checkout Content */}
-      <div className="bg-gray-50 py-12">
-        <div className="max-w-7xl mx-auto px-4">
+      <div className="flex-1 py-8 sm:py-10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <Checkout />
         </div>
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 };
 
